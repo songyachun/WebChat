@@ -10,5 +10,11 @@ def index_view(request):
     return render(request,'index.html')
 
 
-def signup_view(request):        
+def signup_view(request):
     return render(request, 'signup.html')
+
+def chat(request):
+    return HttpResponse('登录成功！')
+
+def user_add_view(request):
+    return HttpResponse('添加用户数据成功！')
