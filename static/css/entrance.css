@@ -1,6 +1,6 @@
 #card{
     width: 500px;
-    height: 450px;
+    height: 500px;
     /* background: wheat; */
     margin: 100px auto;
     padding: 20px auto;
@@ -10,7 +10,7 @@
     height: 250px;
 }
 .signheader img{
-    width: 150px;
+    width: 100px;
     margin-bottom: 10px;
 }
 .signheader h3{
@@ -34,7 +34,8 @@
 }
 
 
-.login-content span{
+.login-content .login_submit{
+    border-style: none;
     display: block;
     background: #ff0035;
     color: white;
@@ -44,11 +45,21 @@
     box-shadow: none;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    margin: 30px auto;
+    margin: 40px auto;
 }
 .login-content .register{
     text-align: center;
 }
 .signup{
     color: #ff0035;
+}
+.rem{
+    margin: px 0;
+    display: inline;
+    float: right;
+    line-height: 14px;
+    color: #999999;
+}
+#remember{
+    width: 13px;
 }

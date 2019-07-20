@@ -17,18 +17,28 @@
     <div id="container">
         <div id="card">
             {% block block_card %}
-            
+
             <div class="signheader">
                 <img src="{% static 'images/timg.jpeg' %}" alt="">
                 <h1>Welcome to WebChat</h1>
                 <h3>Sign in by entering the information below.</h3>
             </div>
             <div class="login-content">
-                <form action="verify" method="POST">
-                    <p>Your Name</p><input type="text" name="name" id="name">
-                    <p>Password</p> <input type="password" name="password" id="password">
+                <form action="login" method="POST">
+                    <label for="name">Your Nmae</label>
+                    <input type="text" name="username" id="name" value="{{ username }}">
+                    <span>{{ name_error }}</span><br>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password"
+                        value="{{ password }}">
+                    <span>{{ password_error }}</span>
                     <br>
-                    <a href="chat"><span>Login</span></a>
+                    <div class="rem">
+                        <input type="checkbox" name="remember" id="remember" value="1">
+                        <label for="remember">Remember the name</label>
+                    </div>
+                    
+                    <input type="submit" value="Login" class="login_submit">
                     <p class="register">Don't have an account ? <a href="signup" class="signup"> Sign up</a> </p>
                 </form>
             </div>

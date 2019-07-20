@@ -4,6 +4,6 @@ $(function(){
     })
     $('.login-content input').blur(function(){
         $(this).prev().css('color','#000000');
-    })
-    
+    });
+   
 })

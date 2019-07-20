@@ -20,8 +20,8 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.index_view),
-    url(r'^index$', views.index_view),
+    url(r'^login$', views.login_view),
+    # url(r'^$', views.index_view),
     url(r'^signup$', views.signup_view),
     url(r'^chat$', views.chat),
     url(r'^user_add$', views.user_add_view),
