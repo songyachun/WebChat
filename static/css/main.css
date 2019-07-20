@@ -9,18 +9,18 @@
 }
 /*头部区域*/
 #header{
-    height:76px;
+    height:50px;
     position:relative;
 }
 #user_icon{
     width:40px;height:40px;
-    margin-top:18px;
-    margin-left:18px;
+    margin-top:5px;
+    margin-left:5px;
 }
 #header #user_name{
     position:absolute;
     width:156px;height:30px;
-    margin-top:23px;
+    margin-top:10px;
     margin-left:10px;
     font-size:18px;
     line-height:30px;
@@ -29,10 +29,11 @@
     width:50px;
     float:right;
     font-size:18px;
-    margin-top:25px;
+    margin-top:12px;
     margin-right:15px;
 }
-#setting:hover{
+#setting:hover,
+#address:hover{
     cursor:pointer;
 }
 #dropdown_set{
@@ -70,14 +71,14 @@ ol>li:hover{
 }*/
 /*天气区域*/
 #weather{
-    width:244px;height:32px;
+    width:244px;height:28px;
     margin:0 auto;
     position:relative;
 }
 #address{
     position:absolute;
     width:36px;
-    font-size:18px;
+    font-size:16px;
 }
 
 #address ol{
@@ -99,7 +100,22 @@ ol>li:hover{
 #weather span{
     position:absolute;
     right:0;
-    font-size:18px;
+    font-size:16px;
+}
+/*搜索框*/
+#search_box{
+    width:280px;height:30px;
+    line-height:16px;
+    font-size:16px;
+}
+#search_box>a{
+    position:absolute;
+    margin:7px 10px;
+}
+#search_box>span{
+    position:absolute;
+    margin-left:55px;
+    margin-top:7px;
 }
 /*内容选择区域*/
 .table_item{

@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^signup$', views.signup_view),
     url(r'^chat$', views.chat),
     url(r'^user_add$', views.user_add_view),
+    url(r'^main$',views.main_view),
 ]

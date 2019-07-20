@@ -18,3 +18,6 @@ def chat(request):
 
 def user_add_view(request):
     return HttpResponse('添加用户数据成功！')
+
+def main_view(request):
+    return render(request,'main.html')
