@@ -1,40 +1,50 @@
-#card{
+#card {
     width: 500px;
-    height: 450px;
+    height: 500px;
     /* background: wheat; */
     margin: 100px auto;
     padding: 20px auto;
     text-align: center;
 }
-.signheader{
+
+.signheader {
     height: 250px;
 }
-.signheader img{
-    width: 150px;
+
+.signheader img {
+    width: 100px;
     margin-bottom: 10px;
 }
-.signheader h3{
+
+.signheader h3 {
     color: #999999;
 }
-.login-content{
+
+.login-content {
     width: 400px;
     margin: 0 auto;
     text-align: left;
     line-height: 30px;
 }
-.login-content input{
+
+.login-content input {
     width: 400px;
     border-style: none;
     border-bottom: 2px solid #999999;
-    
+
 }
 
-.login-content #name:focus,.login-content #password:focus{
+.login-content #username:focus,
+.login-content #password:focus,
+.login-content #password2:focus,
+.login-content #email:focus,
+.login-content #cell_verify:focus {
     border-bottom: 2px solid #ff0035
 }
 
 
-.login-content span{
+.login-content .login_submit {
+    border-style: none;
     display: block;
     background: #ff0035;
     color: white;
@@ -44,11 +54,46 @@
     box-shadow: none;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    margin: 30px auto;
+    margin: 40px auto;
 }
-.login-content .register{
+
+.login-content .register {
     text-align: center;
 }
-.signup{
+
+.signup {
     color: #ff0035;
+}
+
+.rem {
+    margin: px 0;
+    display: inline;
+    float: right;
+    line-height: 14px;
+    color: #999999;
+}
+
+#remember {
+    width: 13px;
+}
+
+/* #cell_verify{
+    width: 200px;
+    float: left;
+} */
+#get_code{
+    position: relative;
+    bottom: 45px;
+    float: right;
+    border-style: none;
+    /* display: block; */
+    background: #ff0035;
+    opacity: 0.5;
+    color: white;
+    width: 80px;
+    height: 35px;
+    border-radius: 20px;
+    box-shadow: none;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
