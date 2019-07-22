@@ -16,7 +16,7 @@
     <div id="left">
         <div id="header">
             <img id="user_icon" src="{% static 'images/timg.jpeg' %}" alt="">
-            <span id="user_name">username</span>
+            <span id="user_name">{{request.session.user.name}}</span>
             <span id="setting">设置</span>
             <!--<button id="setting">设置</button>-->
             <!--<ul>-->
@@ -56,6 +56,13 @@
             </div>
             <img src="" alt=""><!--待添加天气图片-->
             <span>温度</span>
+        </div>
+        <div id="search_box">
+            <a href="#">邮箱</a>
+            <span>
+                <input id="search" type="text">
+                <label for="search">添加</label>
+            </span>
         </div>
         <div data-target="#list_chat" id="chatlist" class="table_item">聊天列表</div>
         <div data-target="#list_news" id="news" class="table_item">资讯</div>
@@ -126,7 +133,7 @@
             <div class="news_item">新闻</div>
         </div>
         <div id="list_friend">
-            <div class="news_item">好友</div>
+            <div class="friend_item">好友</div>
         </div>
     </div>
     <div id="right_blank">

@@ -48,6 +48,20 @@ $(function (){
             $('#list_chat,#list_news').hide();
         }
     })
+    $('.chat_item').click(function (){
+        $('#right').show();
+        $('#right_blank,#right_news,#right_news').hide()
+    })
+    $('.news_item').click(function (){
+        $('#right_news').show();
+        $('#right_blank,#right,#right_friend').hide()
+    })
+    $('.friend_item').click(function (){
+        $('#right_friend').show();
+        $('#right_blank,#right,#right_news').hide()
+    })
+
+
 
 
 
