@@ -26,7 +26,8 @@ SECRET_KEY = '$rd!uds0evnkp&7wnwizs6yvex^3a#warjw=tvo_)3#hv8$y_t'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-
+    '*',
+    '127.0.0.1',
 ]
 
 
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'verify',
-    'database',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -78,13 +79,17 @@ WSGI_APPLICATION = 'webchat.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'webchat',
+        'NAME': 'webchat',  # 数据库名称,需要自己定义
+        'USER': 'root',
+        'PASSWORD': '123456',  # 管理员密码
         'HOST': '127.0.0.1',
         'PORT': 3306,
-        'USER': 'root',
-        'PASSWORD': '123456',
     }
 }
 
