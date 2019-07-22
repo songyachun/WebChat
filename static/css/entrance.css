@@ -61,14 +61,15 @@
     text-align: center;
 }
 
-.signup {
+.signup,
+.forget>a {
     color: #ff0035;
 }
 
 .rem {
     margin: px 0;
     display: inline;
-    float: right;
+    float: left;
     line-height: 14px;
     color: #999999;
 }
@@ -96,4 +97,16 @@
     box-shadow: none;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.login-content span{
+    font-size: 14px;
+    color: #ED4939;
+    float: right;
+}
+.forget{
+    float: right;
+    font-size: 14px;
+}
+#submitter{
+    margin: 50px auto;
 }

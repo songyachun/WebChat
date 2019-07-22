@@ -14,35 +14,42 @@
 </head>
 
 <body>
-<div id="container">
-    <div id="card">
-        {% block block_card %}
+    <div id="container">
+        <div id="card">
+            {% block block_card %}
 
-        <div class="signheader">
-            <img src="{% static 'images/timg.jpeg' %}" alt="">
-            <h1>Welcome to WebChat</h1>
-            <h3>Sign in by entering the information below.</h3>
-        </div>
-        <div class="login-content">
-            <form action="/verify/signin" method="POST">
-                <label for="name">Your Name</label>
-                <input type="text" name="username" id="name" value="{{username}}">
-                <span>{{ name_error }}</span><br>
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password"
-                       value="{{ password }}">
-                <span>{{ password_error }}</span>
-                <br>
-                <div class="rem">
-                    <input type="checkbox" name="remember" id="remember" value="1">
-                    <label for="remember">Remember the name</label>
-                </div>
+            <div class="signheader">
+                <img src="{% static 'images/timg.jpeg' %}" alt="">
+                <h1>Welcome to WebChat</h1>
+                <h3>Sign in by entering the information below.</h3>
+            </div>
+            <div class="login-content">
+                <form action="/verify/signin" method="POST">
 
-                <input type="submit" value="Login" class="login_submit">
-                <p class="register">Don't have an account ? <a href="/verify/signup" class="signup"> Sign up</a></p>
-            </form>
+                    <label for="name">Your Name</label><span>{{ name_error }}</span>
+                    <input type="text" name="username" id="name" value="{{username}}">
+                    <br>
+                    <!--TODO 界面结构控制-->
+                    <label for="password">Password</label><span>{{ password_error }}</span>
+                    <input type="password" name="password" id="password" value="{{ password }}">
+
+                    <br>
+                    <div class="rem">
+                        <input type="checkbox" name="remember" id="remember" value="1">
+                        <label for="remember">Remember the name</label>
+                    </div>
+                    <div class="forget">
+                        <a href="/verify/forget"><b>Forget your password？</b> </a>
+                    </div>
+                    <!--TODO 忘记密码操作-->
+                    <div id="submitter">
+                        <input type="submit" value="Login" class="login_submit">
+                        <p class="register">Don't have an account ? <a href="/verify/signup" class="signup"> <b>Sign
+                                    up</b></a></p>
+                    </div>
+                </form>
+            </div>
+            {% endblock block_card %}
         </div>
-        {% endblock block_card %}
     </div>
-</div>
 </body>
