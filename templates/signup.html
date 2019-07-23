@@ -8,21 +8,27 @@
 </div>
 <div class="login-content">
     <form action="/verify/signup" method="POST">
-        <label for="username"> Your Account</label><input type="text" name="username" id="username"
-            value="{{username}}"> <span>{{ name_error }}</span>
-        <label for="password">Password</label><input type="password" name="password" id="password">
-        <span>{{ password_error }}</span>  <!--TODO 界面结构控制-->
+        <!-- 用户名输入框 -->
+        <label for="username"> Your Account</label><span>{{ name_error }}</span>
+        <input type="text" name="username" id="username" value="{{username}}">
+        <!-- 密码输入框 -->
+        <label for="password">Password</label><span>{{ password_error }}</span>
+        <input type="password" name="password" id="password">
         <br>
-        <label for="password2"> Password Agin</label><input type="password" name="password2"
-            id="password2"><span>{{ password_error }}</span>
-        <label for="email">Email Address</label><input type="text" name="email" id="email"
-            value="{{email}}"><span>{{ email_error }}</span>
-        <div><label for="cell_verify">Cellphone Number</label></div>
-        <input type="text" name="cell_verify" id="cell_verify"><input type="submit" value="Get code" id="get_code"
-            name="get_code"><span>{{ code_error }}</span> <!--TODO添加输入验证码文本框-->
-             <!--TODO  添加name属性-->
+        <label for="password2"> Password Agin</label><span>{{ password_error }}</span>
+        <input type="password" name="password2" id="password2">
+        <!-- 电子邮箱 -->
+        <label for="email">Email Address</label><span>{{ email_error }}</span>
+        <input type="text" name="email" id="email" value="{{email}}">
+        <!-- 手机号码 -->
+        <div><label for="cell_verify">Phone Number</label><span>{{ code_error }}</span></div>
+        <input type="text" name="cell_verify" id="cell_verify">
+        <input type="submit" value="Get code" id="get_code" name="get_code">
+        <!--添加输入验证码文本框-->
+        <div><label for="veri_code">Verification code</label><span>{{ veri_error }}</span></div>
+        <input type="text" id="veri_code" name="veri_code">
         <input type="submit" value="Create" class="login_submit" name="login_submit">
-        <p class="register">Already have an account ? <a href="login" class="signup"> Sign in</a> </p>
+        <p class="register">Already have an account ? <a href="/verify/signin" class="signup"> Sign in</a> </p>
     </form>
 </div>
 {% endblock block_card %}

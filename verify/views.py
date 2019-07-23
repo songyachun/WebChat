@@ -107,3 +107,10 @@ def sign_in(request):
     else:
       resp.delete_cookie("old_user")
     return resp
+
+
+def pwd_reset(request):
+  return render(request,'password_reset.html')
+
+def pwd_reset2(request):
+  return render(request,'password_reset2.html')
