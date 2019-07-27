@@ -1,0 +1,101 @@
+#setBody,#setFoot{
+    width:800px;height:100%;
+    margin:0 auto;
+}
+#info{
+    margin-top:10px;
+}
+h1{
+    color:#000;
+    background:skyblue;
+}
+label{
+    color:#000;
+}
+#d01{
+    position:relative;
+    height:450px;
+}
+img{
+    width:40px;height:40px;
+    position:absolute;
+    left:20px;
+}
+#icon{
+    position:absolute;
+    display:none;
+}
+#upload{
+    position:absolute;
+    top:40px;left:15px;
+}
+
+#d02{
+    position:absolute;
+    left:100px;top:10px;
+}
+
+#d03{
+    position:absolute;
+    left:400px;top:10px;
+}
+
+#d04{
+    position:absolute;
+    left:100px;top:40px;
+}
+
+#d04 div{
+    border:1px solid grey;
+    display:inline-block;
+    width:180px;height:20px;
+}
+#d05{
+    position:absolute;
+    left:400px;top:40px;
+}
+
+#d06{
+   position:absolute;
+   left:20px;top:70px;
+}
+
+#d07{
+    position:absolute;
+    left:400px;top:70px;
+}
+
+#d08{
+    position:absolute;
+    left:20px;top:100px;
+}
+#d09{
+    position:absolute;
+    left:400px;top:100px;
+}
+#d10{
+    position:absolute;
+    left:20px;top:130px;
+}
+#d10 #per_sign{
+    width:700px;height:150px;
+    border:1px solid grey;
+}
+
+/*密码修改*/
+h3{
+    position:absolute;
+    top:310px;
+}
+#mod_pwd{
+    position:absolute;
+    left:20px;top:330px;
+}
+.pwd{
+    display:inline-block;
+    border:1px solid grey;
+    width:200px;height:20px;
+}
+
+
+

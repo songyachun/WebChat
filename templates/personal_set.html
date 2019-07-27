@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个人设置</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main_base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/personal_set.css' %}">
+</head>
+<body>
+    <div id="setBody">
+        <h1 id="01">个人信息</h1>
+        <div id="info">
+            <form action="" method="post" enctype="multipart/form-data">
+                {{ crsf_token }}
+                <div id="d01">
+                    <img src="{% static 'images/timg.jpeg' %}" alt="">
+                    <label id="upload">修改头像
+                        <input type="file" id="icon" maxlength="30">
+                    </label>
+                <div id="d02">
+                    <label>NickName:
+                        <input type="text" id="n_name" placeholder="请输入昵称">
+                    </label>
+                </div>
+                <div id="d03">
+                    <label>Age:
+                        <input type="text" id="age" placeholder="请输入年龄">
+                    </label>
+                </div>
+                <div id="d04">
+                    <span>Account:</span>
+                    <div>{{user.account}}</div>
+                </div>
+                <div id="d05">
+                    <span>Gender:</span>
+                    <label>Boy
+                        <input type="radio" name="gender" value="boy">
+                    </label>
+                    <label>Girl
+                        <input type="radio" name="gender" value="girl">
+                    </label>
+                </div>
+                <div id="d06">
+                    <span>生日</span>
+                    <input type="text" name="birthday">
+                </div>
+                <div id="d07">
+                    <span>住址</span>
+                    <input type="text" name="address">
+                </div>
+                <div id="d08">
+                    <label>E-mail
+                    <input type="text" id="mail"
+                           placeholder="{{user.mail}}">
+                    </label>
+                </div>
+                <div id="d09">
+                    <label>PhoneNumber:
+                        <input type="text" id="phone_num"
+                            placeholder="{{user.mobil_phone}}">
+                    </label>
+                </div>
+                <div id="d10">
+                    <label for="per_sign">PersonalSignature:</label>
+                        <div id="per_sign">个性签名</div>
+
+                </div>
+
+                <h3>修改密码:</h3>
+                <div id="mod_pwd">
+                    <p><label>原密码:
+                        <div class="pwd">123</div>
+                    </label></p>
+                    <p><label>新密码:
+                        <div class="pwd"></div>
+                    </label></p>
+                    <p><label>再次确认:
+                        <div class="pwd"></div>
+                    </label></p>
+                </div>
+                </div>
+            </form>
+        </div>
+        <hr>
+        <h1 id="02">界面设置</h1>
+        <div style="height:400px;color:grey;">to be contiune</div>
+        <hr>
+        <h1 id="03">意见反馈</h1>
+        <div>
+            <textarea name="" id="" cols="30" rows="10"></textarea>
+        </div>
+        <button>提交设置</button><button>恢复设置</button>
+    </div>
+    <div id="setFoot">
+        <h2>感谢使用WebChat</h2>
+    </div>
+</body>
+</html>

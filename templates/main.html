@@ -18,31 +18,26 @@
             <img id="user_icon" src="{% static 'images/timg.jpeg' %}" alt="">
             <span id="user_name">{{request.session.user.name}}</span>
             <span id="setting">设置</span>
-            <!--<button id="setting">设置</button>-->
-            <!--<ul>-->
-                <!--<li>-->
-                    <!--设置-->
-                    <!--<ol>-->
-                        <!--<li>修改头像</li>-->
-                        <!--<li>修改昵称</li>-->
-                        <!--<li>修改字体</li>-->
-                        <!--<li>意见反馈</li>-->
-                        <!--<li>退出程序</li>-->
-                    <!--</ol>-->
-                <!--</li>-->
-            <!--</ul>-->
         </div>
         <div id="dropdown_set">
-            <p class="set_item">个人信息</p>
-            <p class="set_item">界面设置</p>
-            <p class="set_item">意见反馈</p>
-            <p class="set_item">退出登陆</p>
+            <p class="set_item">
+                <a href="/verify/personal_set#01">个人信息</a>
+            </p>
+            <p class="set_item">
+                <a href="/verify/personal_set#02">界面设置</a>
+            </p>
+            <p class="set_item">
+                <a href="/verify/personal_set#03">意见反馈</a>
+            </p>
+            <p class="set_item">
+                <a href="">退出登陆</a>
+            </p>
         </div>
         <div id="weather">
             <div id="address">
                 <ul>
                     <li>
-                        深圳
+                        <span>深圳</span>
                         <ol>
                             <li>北京</li>
                             <li>上海</li>
@@ -68,12 +63,14 @@
         <div data-target="#list_news" id="news" class="table_item">资讯</div>
         <div data-target="#list_friend" id="friendlist" class="table_item">好友列表</div>
         <div id="list_chat">
+            {# for ... #}
             <div class="chat_item">
                 <img src="{% static 'images/timg.jpeg' %}" alt="">
                 <span class="f_name">好友名称</span>
                 <span class="info">信息</span>
                 <span class="time">时间</span>
             </div>
+            {# endfor #}
             <div class="chat_item">
                 <img src="{% static 'images/timg.jpeg' %}" alt="">
                 <span class="f_name">好友名称</span>
@@ -130,10 +127,25 @@
             </div>
         </div>
         <div id="list_news">
-            <div class="news_item">新闻</div>
+            {# for... #}
+            <div class="news_item">
+                <a href="#"><div>新闻title</div></a>
+                <img src="{% static 'images/timg.jpeg' %}" alt="">
+            </div>
+            <div class="news_item">
+                <a href="#"><div>新闻title</div></a>
+                <img src="{% static 'images/timg.jpeg' %}" alt="">
+            </div>
+            {# endfor #}
         </div>
         <div id="list_friend">
-            <div class="friend_item">好友</div>
+            <div class="friend_item">
+                <h3>A</h3>
+                <div class="contact_item">
+                    <img src="{% static 'images/timg.jpeg' %}" alt="">
+                    <h4>好友昵称</h4>
+                </div>
+            </div>
         </div>
     </div>
     <div id="right_blank">

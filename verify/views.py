@@ -107,3 +107,8 @@ def sign_in(request):
     else:
       resp.delete_cookie("old_user")
     return resp
+
+  #个人设置
+  # @csrf_exempt
+def personal_set(request):
+  return render(request,'personal_set.html')

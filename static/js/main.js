@@ -11,6 +11,11 @@ $(function (){
     });
     /*点击#address显示下拉列表*/
     $('#address ul>li').click(function (e){
+//        console.log($("#address ol").show());
+//        if($("#address ol").css("display")=="none")
+//         $("#address ol").show();
+//        else
+//           $("#address ol").hide();
         e.stopPropagation();
         $('#address ol').slideToggle();
         if($('#address ol').is(':visible')){
@@ -29,7 +34,7 @@ $(function (){
 //    }
     $('#address ol li').click(function (){
        /*var data=$(this).html();*/
-       $('#address ul>li').html($(this).html())
+       $('#address ul span').html($(this).html())
     });
 
     $('#left').delegate('div[data-target]',
