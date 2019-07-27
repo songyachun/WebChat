@@ -134,3 +134,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+# session在浏览器重启后过期
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

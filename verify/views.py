@@ -24,18 +24,29 @@ def register_verify(request):
     if not re.match(r"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$", password):
       password_error="密码不符合规定"
       return render(request, "signup.html", locals())
-
-    # 电话号码约束
-    phone_number= request.POST.get("cell_verify", "")
-    if not re.match(r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}",phone_number):
-      phone_error="无效的手机号"
+    password2=request.POST.get("password2","")
+    if not password2==password:
+      password_error="两次密码不一致"
       return render(request, "signup.html", locals())
 
     # 邮箱约束
     email=request.POST.get("email", "")
-    if not re.match(r"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$",email):
+    if not re.match(r"^[\.a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$",email):
       email_error="无效邮箱"
       return render(request, "signup.html", locals())
+    if models.User.objects.filter(email=email):
+      email_error="邮箱已被注册"
+      return render(request, "signup.html", locals())
+
+    # 电话号码约束
+    phone_number= request.POST.get("cell_verify", "")
+    if not re.match(r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}",phone_number):
+      code_error="无效的手机号"
+      return render(request, "signup.html", locals())
+    if models.User.objects.filter(phone_number=phone_number):
+      code_error="手机号已被注册"
+      return render(request, "signup.html", locals())
+
 
     # 验证用户名是否已存在
     try:
@@ -74,14 +85,6 @@ def sign_in(request):
     if not re.match(r"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$", password):
       password_error = "密码不符合规定"
       return render(request, "login.html", locals())
-
-    # # 电话号码约束
-    # if not re.match(r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}",phone_number):
-    #   return HttpResponse("无效的手机号")
-    #
-    # # 邮箱约束
-    # if not re.match(r"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$",email):
-    #   return HttpResponse("无效邮箱")
 
     # 用户名和密码验证
     try:

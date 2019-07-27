@@ -169,7 +169,7 @@ ol>li:hover{
 #list_news,#list_friend{
     display:none;
 }
-.chat_item,.news_item,{
+.chat_item,.news_item{
     height:64px;
     position:relative;
     border-bottom:1px solid grey;
