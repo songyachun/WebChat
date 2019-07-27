@@ -35,11 +35,8 @@ $(function (){
     
     $('#address ol li').click(function (){
        /*var data=$(this).html();*/
-<<<<<<< HEAD
        $('#address ul span').html($(this).html())
-=======
        $('#address ul>li').html()=($(this).html())
->>>>>>> yc
     });
 
     $('#left').delegate('div[data-target]',
