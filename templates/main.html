@@ -49,8 +49,8 @@
                     </li>
                 </ul>
             </div>
-            <img src="" alt=""><!--待添加天气图片-->
-            <span>温度</span>
+            <span id="s01">{{weather.0}}</span><!--待添加天气图片-->
+            <span id="s02">{{weather.1}}</span>
         </div>
         <div id="search_box">
             <a href="#">邮箱</a>
@@ -127,16 +127,16 @@
             </div>
         </div>
         <div id="list_news">
-            {# for... #}
-            <div class="news_item">
-                <a href="#"><div>新闻title</div></a>
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
+            {% for news in news_list %}
+            <div  class="news_item">
+                <a href="{{news.1}}"><div>{{news.2}}</div></a>
+                <img src="{{news.0}}" alt="">
             </div>
-            <div class="news_item">
-                <a href="#"><div>新闻title</div></a>
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
-            </div>
-            {# endfor #}
+            <!--<div style="background:green;" class="news_item">-->
+                <!--<a href="#"><div>新闻title</div></a>-->
+                <!--<img src="{% static 'images/timg.jpeg' %}" alt="">-->
+            <!--</div>-->
+            {% endfor %}
         </div>
         <div id="list_friend">
             <div class="friend_item">

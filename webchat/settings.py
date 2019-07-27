@@ -85,7 +85,7 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'webchat',  # 数据库名称,需要自己定义
+        'NAME': 'webchat_db',  # 数据库名称,需要自己定义
         'USER': 'root',
         'PASSWORD': '123456',  # 管理员密码
         'HOST': '127.0.0.1',

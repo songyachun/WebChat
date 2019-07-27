@@ -94,13 +94,13 @@ ol>li:hover{
 #address ol li:hover{
     background:grey;
 }
-#weather img{
+#weather #s01{
     position:absolute;
     left:44px;
     width:155px;height:28px;
     background:grey;
 }
-#weather span{
+#weather #s02{
     position:absolute;
     right:0;
     font-size:16px;
@@ -217,7 +217,7 @@ ol>li:hover{
 /*.friend_item内部样式*/
 .friend_item h3{
     height:24px;
-    background:pink;
+
     border-bottom:1px solid grey;
 }
 .contact_item{
