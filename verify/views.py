@@ -39,13 +39,13 @@ def register_verify(request):
       return render(request, "signup.html", locals())
 
     # 电话号码约束
-    phone_number= request.POST.get("cell_verify", "")
-    if not re.match(r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}",phone_number):
-      code_error="无效的手机号"
-      return render(request, "signup.html", locals())
-    if models.User.objects.filter(phone_number=phone_number):
-      code_error="手机号已被注册"
-      return render(request, "signup.html", locals())
+    # phone_number= request.POST.get("cell_verify", "")
+    # if not re.match(r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}",phone_number):
+    #   code_error="无效的手机号"
+    #   return render(request, "signup.html", locals())
+    # if models.User.objects.filter(phone_number=phone_number):
+    #   code_error="手机号已被注册"
+    #   return render(request, "signup.html", locals())
 
 
     # 验证用户名是否已存在
@@ -60,7 +60,7 @@ def register_verify(request):
 
       models.User.objects.create(username=rname,
                                  password=password,
-                                 mobile_number=phone_number,
+                                 # mobile_number=phone_number,
                                  email=email)
       resp= HttpResponseRedirect("/verify/signin")
       resp.set_cookie("old_user",rname)
