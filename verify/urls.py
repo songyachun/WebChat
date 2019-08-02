@@ -6,9 +6,10 @@ urlpatterns=[
   url(r"^signup",views.register_verify),
   # 登录
   url(r"^signin",views.sign_in),
-
   url(r'^personal_set',views.personal_set),
   # 忘记密码
-  url(r'^pwd_reset/$',views.pwd_reset),
-  url(r'^pwd_reset2/$',views.pwd_reset2),
+  url(r'^pwd_reset$',views.pwd_reset),
+  url(r'^pwd_reset2$',views.pwd_reset2),
+  # 发送手机短信
+  url(r'^get_code$',views.get_code)
 ]

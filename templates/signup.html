@@ -1,6 +1,7 @@
 {% extends 'login.html' %}
 {% load static %}
 {% block block_card %}
+
 <div class="signheader">
     <img src="{% static 'images/timg.jpeg' %}" alt="">
     <h1>Welcome to WebChat</h1>
@@ -23,12 +24,30 @@
         <!-- 手机号码 -->
         <div><label for="cell_verify">Phone Number</label><span>{{ code_error }}</span></div>
         <input type="text" name="cell_verify" id="cell_verify">
-        <input type="submit" value="Get code" id="get_code" name="get_code">
+        <input type="button" value="Get code" id="get_code" name="get_code">
         <!--添加输入验证码文本框-->
         <div><label for="veri_code">Verification code</label><span>{{ veri_error }}</span></div>
         <input type="text" id="veri_code" name="veri_code">
         <input type="submit" value="Create" class="login_submit" name="login_submit">
         <p class="register">Already have an account ? <a href="/verify/signin" class="signup"> Sign in</a> </p>
     </form>
+<script>
+    $(function(){
+        $("#get_code").click(function(){
+                console.log("点击")
+                $.ajax({
+                    url:"/verify/get_code",
+                    type:"get",
+                    data:{"phone_number":$("#cell_verify").val()},
+                    dataType:"text",
+                    async:true,
+                    success:function(resText){
+                        console.log(resText)
+
+                    }
+                })
+            })
+    })
+</script>
 </div>
 {% endblock block_card %}
