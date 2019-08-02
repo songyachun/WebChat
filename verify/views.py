@@ -218,8 +218,12 @@ def pwd_reset2(request):
     # 加密
     rpassword = make_password(password1, "a", 'pbkdf2_sha1')
     # 修改密码
-    # user = models.User.objects.filter(mobile_number=veri_info[2])[0]
-    user = models.User.objects.filter(mobile_number="18720988525")[0]
+    try:
+      mobile_number = veri_info[2]
+    except:
+      password_error = "请先获取验证码"
+      return render(request, 'password_reset2.html', locals())
+    user = models.User.objects.filter(mobile_number=mobile_number)[0]
     user.password = rpassword
     user.save()
     return HttpResponseRedirect("/verify/signin")

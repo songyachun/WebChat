@@ -2,13 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a2fd2a49-1371-41d5-a1f4-81881a050fff" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/password_reset.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/password_reset.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/password_reset2.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/password_reset2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/signup.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verify/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/verify/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/verify/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/verify/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -82,8 +75,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/verify/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-690">
-              <caret line="79" column="11" lean-forward="true" selection-start-line="79" selection-start-column="11" selection-end-line="79" selection-end-column="11" />
+            <state relative-caret-position="314">
+              <caret line="225" column="65" selection-start-line="225" selection-start-column="65" selection-end-line="225" selection-end-column="65" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
                 <element signature="e#706#783#0" />
@@ -99,7 +92,6 @@
                 <element signature="e#4060#4200#0" />
                 <element signature="e#4219#4299#0" />
                 <element signature="e#4364#4422#0" />
-                <element signature="e#5963#6050#0" />
                 <element signature="e#6163#6252#0" />
               </folding>
             </state>
@@ -671,8 +663,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/verify/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-690">
-          <caret line="79" column="11" lean-forward="true" selection-start-line="79" selection-start-column="11" selection-end-line="79" selection-end-column="11" />
+        <state relative-caret-position="314">
+          <caret line="225" column="65" selection-start-line="225" selection-start-column="65" selection-end-line="225" selection-end-column="65" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
             <element signature="e#706#783#0" />
@@ -688,7 +680,6 @@
             <element signature="e#4060#4200#0" />
             <element signature="e#4219#4299#0" />
             <element signature="e#4364#4422#0" />
-            <element signature="e#5963#6050#0" />
             <element signature="e#6163#6252#0" />
           </folding>
         </state>
