@@ -1,105 +1,117 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>个人设置</title>
+    <title>{% block title %}Personal settings{% endblock title %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/main_base.css' %}">
     <link rel="stylesheet" href="{% static 'css/personal_set.css' %}">
+    <script src="../static/js/jquery-1.11.3.js"></script>
+    <script src="../static/js/common.js"></script>
+    <script src="../static/js/personal_set.js"></script>
 </head>
+
 <body>
+    <div id="bg">
+        <img src="../static/images/c.jpg" alt="">
+    </div>
     <div id="setBody">
-        <h1 id="01">个人信息</h1>
+        <!-- <h1 id="01">Personal settings</h1> -->
         <div id="info">
-            <form action="" method="post" enctype="multipart/form-data">
-                {{ crsf_token }}
-                <div id="d01">
+            <div id="float-left">
+                <ul>
+                    {% block li %}
+
+                    <li id="self"> <a href="personal_set">Public profile</a></li>
+                    <li><a href='change_password'>Password change</a></li>
+                    <li><a href='inter_layout'>Interface layout</a></li>
+                    <li><a href='feedback'>Feedback</a></li>
+                    {% endblock li %}
+                    <li style="color: #0366d6;">...</li>
+                    <li style="color: #0366d6;">...</li>
+
+                </ul>
+            </div>
+            <div id="centent">
+
+
+                <h2 style="font-weight: 400;"> {% block bt %}Public profile{% endblock bt %}</h2>
+                {% block centent %}
+                <table id="pub">
+                    <tr>
+                        <td>NickName:</td>
+                        <td> <input style="width: 240px;" type="text" id="nickname" placeholder="请输入昵称"></td>
+                    </tr>
+                    <tr>
+                        <td>Age:</td>
+                        <td> <input style="width: 240px;" type="text" id="age" placeholder="请输入年龄"></td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: gray">Account:</span></td>
+                        <td><input style="width: 240px;" type="text" placeholder="{{username}}" disabled="true"
+                                id="username" 　readOnly="true" value="{{username}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Gender：</td>
+                        <td><label>Boy
+                                <input type="radio" name="gender" value="boy" id="gender">
+                            </label>
+                            <label>Girl
+                                <input type="radio" name="gender" value="girl" id="gender">
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Birthday:</td>
+                        <td><input style="width: 240px;" type="text" name="birthday" placeholder="请输入生日" id="birthday">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Address:</td>
+                        <td><input style="width: 240px;" type="text" name="address" placeholder="请输入地址" id="address">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>E-mail:</td>
+                        <td><input style="width: 240px;" type="text" id="mail" placeholder="{{user.mail}}"></td>
+                    </tr>
+                    <tr>
+                        <td>PhoneNumber:</td>
+                        <td><input style="width: 240px;" type="text" id="phone_num" placeholder="{{user.mobil_phone}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="per_sign_title">PersonalSignature：</td>
+
+                        <td>
+                            <textarea style="width: 240px;" name="" id="per_sign" cols="21" rows="5"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <div id=image>
+                    <h4 style="font-weight: 500;">Profile picture</h4>
+                    <!-- TODO 获取图片 -->
+                    <br>
+
                     <img src="{% static 'images/timg.jpeg' %}" alt="">
-                    <label id="upload">修改头像
-                        <input type="file" id="icon" maxlength="30">
-                    </label>
-                <div id="d02">
-                    <label>NickName:
-                        <input type="text" id="n_name" placeholder="请输入昵称">
-                    </label>
-                </div>
-                <div id="d03">
-                    <label>Age:
-                        <input type="text" id="age" placeholder="请输入年龄">
-                    </label>
-                </div>
-                <div id="d04">
-                    <span>Account:</span>
-                    <div>{{user.account}}</div>
-                </div>
-                <div id="d05">
-                    <span>Gender:</span>
-                    <label>Boy
-                        <input type="radio" name="gender" value="boy">
-                    </label>
-                    <label>Girl
-                        <input type="radio" name="gender" value="girl">
-                    </label>
-                </div>
-                <div id="d06">
-                    <span>生日</span>
-                    <input type="text" name="birthday">
-                </div>
-                <div id="d07">
-                    <span>住址</span>
-                    <input type="text" name="address">
-                </div>
-                <div id="d08">
-                    <label>E-mail
-                    <input type="text" id="mail"
-                           placeholder="{{user.mail}}">
-                    </label>
-                </div>
-                <div id="d09">
-                    <label>PhoneNumber:
-                        <input type="text" id="phone_num"
-                            placeholder="{{user.mobil_phone}}">
-                    </label>
-                </div>
-                <div id="d10">
-                    <label for="per_sign">PersonalSignature:</label>
-                        <div id="per_sign">个性签名</div>
-
-                </div>
-
-                <h3><span>修改密码:</span></h3>
-                <div id="mod_pwd">
-                    <p><label>原密码:
-                        <input placeholder="请输入原密码" type="password" class="pwd"></input>
-                    </label></p>
                     <br>
-                    <p><label>新密码:
-                        <input placeholder="请输入新密码" type="password" class="pwd"></input>
-                    </label></p>
-                    <br>
-                    <p><label>新密码:
-                        <input placeholder="请再次输入新密码" type="password" class="pwd"></input>
-                    </label></p>
-                    <button>修改</button><button>取消</button>
+                    <input type="file" id="icon" maxlength="30">
+                    <button id="avatar_btn">Upload</button>
                 </div>
-                </div>
-            </form>
+                <button id="per_btn">Submit</button>
+                {% endblock centent %}
+            </div>
+
         </div>
-        <hr>
-        <h1 id="02">界面设置</h1>
-        <div style="height:400px;color:grey;">to be contiune</div>
-        <hr>
-        <h1 id="03">意见反馈</h1>
-        <div>
-            <textarea name="" id="" cols="30" rows="10"></textarea>
-        </div>
-        <button>提交设置</button><button>恢复设置</button>
     </div>
     <div id="setFoot">
         <h2>感谢使用WebChat</h2>
     </div>
 </body>
+
 </html>

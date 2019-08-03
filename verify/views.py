@@ -173,11 +173,6 @@ def send_sms(number, mobile):
   return result2
 
 
-# 个人设置
-@csrf_exempt
-def personal_set(request):
-  return render(request, 'personal_set.html')
-
 # 忘记密码的验证
 def pwd_reset(request):
   if request.method == "GET":

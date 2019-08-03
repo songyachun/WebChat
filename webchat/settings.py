@@ -87,7 +87,7 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'webchat',  # 数据库名称,需要自己定义
+        'NAME': 'webchat_db',  # 数据库名称,需要自己定义
         'USER': 'root',
         'PASSWORD': '123456',  # 管理员密码
         'HOST': '127.0.0.1',
@@ -138,3 +138,10 @@ STATICFILES_DIRS = (
 )
 # session在浏览器重启后过期
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# MEDIA_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/avatar')
+
+
+
+

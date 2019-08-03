@@ -34,7 +34,7 @@ class UserInfo(models.Model):
     nickname=models.CharField("昵称",max_length=128)
     sex=models.IntegerField("性别")
     age=models.IntegerField("年龄")
-    brithday=models.CharField("生日",max_length=100,null=True)
+    birthday=models.CharField("生日",max_length=100,null=True)
     profile_head = models.ImageField("头像", blank=True, null=True, upload_to="upload")
     profile=models.CharField("个性签名",max_length=255,null=True)
     user=models.OneToOneField(User)

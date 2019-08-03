@@ -1,5 +1,4 @@
-import json
-
+import os
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 import pymysql
@@ -10,6 +9,9 @@ import re, time
 from dwebsocket import require_websocket
 from dwebsocket import accept_websocket
 from dwebsocket.websocket import WebSocket
+from verify import models, views
+from webchat import settings
+from verify.views import csrf_exempt
 
 
 # 函数装饰器，检查用户是否登入，没有登入跳转登入页面
@@ -23,7 +25,6 @@ def check_login(fn):
       return HttpResponseRedirect("/verify/signin")
     else:
       return fn(request, *args, **kwargs)
-
   return warp
 
 
@@ -47,6 +48,164 @@ def chat(request):
     weather = get_weather(ip)
     news_list = get_news()
     return render(request, "main.html", locals())
+
+
+# 修改密码
+@check_login
+def mod_pwd(request):
+    if request.method == 'GET':
+        username = request.session["user"]["name"]
+        return render(request,'change_password.html',locals())
+    if request.method == 'POST':
+        try:
+            username = request.session["user"]["name"]
+            user = models.User.objects.filter(username=username)
+        except:
+            return HttpResponse('用户未登录')
+
+        # 修改密码
+        # 输入的旧密码old_pwd，新密码new_pwd1,new_pwd2
+        old_pwd = request.POST.get('old_password')
+        new_pwd1 = request.POST.get('password1')
+        new_pwd2 = request.POST.get('password2')
+
+        # 密码约束 由6-12位字母、数字组成
+        if not re.match(r"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$", new_pwd1):
+            new_pwd_error = "密码不符合规定"
+            return render(request, "change_password.html", locals())
+
+        old_pwd = views.make_password(old_pwd, "a", 'pbkdf2_sha1')
+        if user.password == old_pwd:
+            if new_pwd1 == new_pwd2:
+                new_pwd2 = views.make_password(new_pwd2, "a", 'pbkdf2_sha1')
+                user.password = new_pwd2
+                print('***********************')
+                print('user.password',user.password)
+                print('***********************')
+
+                user.save()
+                return HttpResponse(0)
+            else:
+                new_pwd_error = '新密码输入不一致'
+                return render(request, 'change_password.html', locals())
+        else:
+            old_pwd_error = '旧密码输入错误'
+            return render(request, 'change_password.html', locals())
+
+def inter_layout(request):
+    return render(request,'inter_layout.html')
+
+def feedback(request):
+    return render(request,'feedback.html')
+
+# 修改昵称 年龄　生日　地址　电子邮件　电话号码
+@csrf_exempt
+def mod_user_info(request):
+    if request.method == 'GET':
+        username = request.session["user"]["name"]
+        return render(request, 'personal_set.html', locals())
+    if request.method == 'POST':
+        try:
+            username = request.session["user"]["name"]
+            user = models.User.objects.filter(username=username)[0]
+            print(user.id)
+
+        except:
+            return HttpResponse('用户未登录')
+
+        new_email = request.POST.get('mail', '')
+        sex = request.POST.get('gender', '')
+        nickname = request.POST.get('nickname', '')
+        age = request.POST.get('age', '')
+        birthday = request.POST.get('birthday', '')
+        phone_num = request.POST.get('phone_num', '')
+        address = request.POST.get('address', '')
+        per_sign = request.POST.get('per_sign', '')
+        # 查看接收到的数据
+        print("****************")
+        print('new_email:', new_email)
+        print('sex:', sex)
+        print('nickname:', nickname)
+        print('age:', age)
+        print('birthday:', birthday)
+        print('phone_num:', phone_num)
+        print('address:', address)
+        print('per_sign:', per_sign)
+        print("****************")
+
+        # 修改信息
+        # User表
+        # 数据库为空则添加否则修改
+        if not models.User.email or not models.User.mobile_number:
+            models.User.objects.create(email=new_email)
+            models.User.mobile_number.objects.create(mobile_number=phone_num)
+        else:
+            user.email = new_email
+            user.mobile_number = phone_num
+            user.save()
+            # return HttpResponse('1')
+
+        # UserInfo表
+        # 数据转换boy->1 gril->0
+        if sex == 'boy':
+            sex = 1
+        else:
+            sex = 0
+
+        # 实例化Province一个城市对象
+        province = models.Province.objects.create(P_name=address)
+        city = models.City.objects.create(
+            C_Name='11',
+            P_ProcvinceID=province)
+
+        # 用户有信息则修改,没有则创建
+        try:
+            userinfo = models.UserInfo.objects.get(user=user)
+            userinfo.nickname = nickname
+            userinfo.age = age
+            userinfo.bithday = birthday
+            userinfo.sex = sex
+            userinfo.save()
+        except:
+            pass
+            userinfo = models.UserInfo.objects.create(
+                nickname=nickname,
+                sex=sex,
+                age=age,
+                birthday=birthday,
+                province_id=province,
+                user=user,  # 增加一对一属性
+                city_id= city,
+
+            )
+
+        return HttpResponse('1')
+
+
+# 上传头像
+@csrf_exempt
+def upload_avatar(request):
+    if request.method == 'GET':
+        username = request.session["user"]["name"]
+        return render(request, 'personal_set.html', locals())
+    if request.method == "POST":
+        try:
+            username = request.session["user"]["name"]
+            user = models.User.objects.filter(username=username)
+        except:
+            return HttpResponse('用户未登')
+
+
+        avatar = request.FILES.get('avatar')
+        # 写入头像文件到static/avatar
+        filename = os.path.join(settings.MEDIA_ROOT, avatar.name)
+        with open(filename, 'wb') as f:
+            f.write(avatar.file.read())
+        print('avatar', avatar)
+        user.avatar = avatar
+        user.save()
+        return HttpResponse("1")
+
 
 # 刷新天气
 def city_weather(request):
@@ -155,7 +314,7 @@ def get_city_code(city):
                          port=3306,
                          user='root',
                          password='123456',
-                         database='webchat',
+                         database='webchat_db',
                          charset="utf8")
   cursor = conn.cursor()
   sql = '''select code from city_code where city="%s";''' % (city)
@@ -168,16 +327,17 @@ def get_city_code(city):
   return city_code[0]
 
 
+
 # 根据IP获取城市
 def get_city(ip):
-  url = "http://ip.tool.chinaz.com/?IP={}".format(ip)
-  headers = {
-    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}
-  responses = requests.get(url, headers=headers)
-  context = responses.content.decode("utf-8")
-  city = re.findall(r'span class="Whwtdhalf w50-0">.*?省(\w+?)市.*?</span>', context)
-  print(city)
-  return city[0]
+    url = "http://ip.tool.chinaz.com/?IP={}".format(ip)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}
+    responses = requests.get(url, headers=headers)
+    context = responses.content.decode("utf-8")
+    city = re.findall(r'span class="Whwtdhalf w50-0">.*?省(\w+?)市.*?</span>', context)
+    print(city)
+    return city[0]
 
 
 # 根据客户端ip获取天气
@@ -216,3 +376,4 @@ def get_news():
     n += 1
     if n > 4:
       return news_list
+

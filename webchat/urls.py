@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
+from django.conf.urls.static import static
+from  . import settings
 
 from . import views
 urlpatterns = [
@@ -24,3 +26,7 @@ urlpatterns = [
     url(r'^verify/',include("verify.urls")),
     url(r'^chat/',include("chat.urls")),
 ]
+
+
+urlpatterns += static(settings.STATIC_URL, document_root = settings.MEDIA_ROOT)
+
