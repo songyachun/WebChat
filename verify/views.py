@@ -108,7 +108,15 @@ def sign_in(request):
       resp.delete_cookie("old_user")
     return resp
 
+
   #个人设置
-  # @csrf_exempt
+@csrf_exempt
 def personal_set(request):
   return render(request,'personal_set.html')
+
+def pwd_reset(request):
+  return render(request,'password_reset.html')
+
+def pwd_reset2(request):
+  return render(request,'password_reset2.html')
+

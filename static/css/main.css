@@ -94,13 +94,15 @@ ol>li:hover{
 #address ol li:hover{
     background:grey;
 }
-#weather img{
+#weather #s01{
     position:absolute;
-    left:44px;
-    width:155px;height:28px;
-    background:grey;
+    left:64px;
+    width:100px;height:28px;
+    line-height:28px;
+    font-size:16px;
+    text-align:center;
 }
-#weather span{
+#weather #s02{
     position:absolute;
     right:0;
     font-size:16px;
@@ -146,19 +148,22 @@ ol>li:hover{
 /*滚动条样式*/
 #list_chat::-webkit-scrollbar,
 #list_news::-webkit-scrollbar,
-#list_friend::-webkit-scrollbar{
+#list_friend::-webkit-scrollbar,
+#right_bd{
      width:4px;
 }
 #list_chat::-webkit-scrollbar-thumb,
 #list_news::-webkit-scrollbar-thumb,
-#list_friend::-webkit-scrollbar-thumb{
+#list_friend::-webkit-scrollbar-thumb,
+#right_bd::-webkit-scrollbar-thumb{
     border-radius: 10px;
     -webkit-box-shadow:inset 0 0 5px rgba(0,0,0,0.2);
     background:rgba(0,0,0,0.2);
 }
 #list_chat::-webkit-scrollbar-track,
 #list_news::-webkit-scrollbar-track,
-#list_friend::-webkit-scrollbar-track{
+#list_friend::-webkit-scrollbar-track,
+#right_bd::-webkit-scrollbar-track{
      -webkit-box-shadow:inset 0 0 5px rgba(0,0,0,0.2);
      border-radius:0;
      background:rgba(0,0,0,0.1);
@@ -201,23 +206,25 @@ ol>li:hover{
 /*news_item内部样式*/
 .news_item a{
     position:absolute;
-    top:12px;left:20px;
+    top:50%;left:20px;
+    margin-top:-20px;
 }
 .news_item a div{
     width:194px;height:40px;
-    background:pink;
-    position:absolute:
+    font-size:16px;
+    text-align:center;
 }
 .news_item img{
     width:40px;height:40px;
     position:absolute;
-    top:12px;right:15px;
+    top:50%;right:15px;
+    margin-top:-20px;
 }
 
 /*.friend_item内部样式*/
 .friend_item h3{
     height:24px;
-    background:pink;
+
     border-bottom:1px solid grey;
 }
 .contact_item{
@@ -249,10 +256,10 @@ ol>li:hover{
 #right,#right_news,#right_friend{
     display:none;
 }
-#right #right_hd{
+#right_hd,#right_friend_hd{
     width:720px;height:51px;
 }
-#right_hd #chat_title{
+#chat_title,#right_friend_title{
     width:682px;height:30px;
     margin:0 19px;
     padding:10px 0;
@@ -260,11 +267,12 @@ ol>li:hover{
     text-align:center;
     line-height:30px;
 }
-#right #right_bd{
+#right_bd{
     width:682px;height:410px;
     padding:0 19px;
     /*background:skyblue;*/
     border-bottom:1px solid grey;
+    overflow-y:auto;
 }
 #chat_tool{
     width:682px;height:30px;
@@ -275,7 +283,8 @@ ol>li:hover{
     position:absolute;
     width:682px;height:120px;
     margin-left:17px;
-    line-height:30px;
+    line-height:18px;
+    border:1px solid black;
 }
 
 #chat_btn{
@@ -283,4 +292,25 @@ ol>li:hover{
     position:absolute;
     bottom:20px;
     right:17px;
+}
+
+.content{
+    font-size:14px;
+    width:640px;min-height:40px;
+    position:relative;
+    margin-top:10px;
+}
+.content img{
+    position:absolute;
+    width:40px;height:40px;
+    top:0;right:0;
+}
+.content div{
+    position:absolute;
+    right:45px;
+    max-width:640px;min-height:40px;
+    background:skyblue;
+    text-align:left;
+    align-items:center;
+    display:-webkit-flex;
 }

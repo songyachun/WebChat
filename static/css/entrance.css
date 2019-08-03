@@ -20,6 +20,14 @@
     color: #999999;
 }
 
+.signheader h4 {
+    width: 400px;
+    margin: 30px auto;
+    text-align: center;
+    color: #ED4939;
+
+}
+
 .login-content {
     width: 400px;
     margin: 0 auto;
@@ -38,12 +46,15 @@
 .login-content #password:focus,
 .login-content #password2:focus,
 .login-content #email:focus,
-.login-content #cell_verify:focus {
+.login-content #cell_verify:focus,
+.login-content #veri_code:focus {
     border-bottom: 2px solid #ff0035
 }
 
 
-.login-content .login_submit {
+.login-content .login_submit,
+.login-content .reset_submit,
+.login-content .change_submit {
     border-style: none;
     display: block;
     background: #ff0035;
@@ -61,16 +72,17 @@
     text-align: center;
 }
 
-.signup {
+.signup,
+.forget>a {
     color: #ff0035;
 }
 
 .rem {
     margin: px 0;
     display: inline;
-    float: right;
+    float: left;
     line-height: 14px;
-    color: #999999;
+    color: #ff0035;
 }
 
 #remember {
@@ -81,7 +93,7 @@
     width: 200px;
     float: left;
 } */
-#get_code{
+#get_code {
     position: relative;
     bottom: 45px;
     float: right;
@@ -96,4 +108,19 @@
     box-shadow: none;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.login-content span {
+    font-size: 14px;
+    color: #ED4939;
+    float: right;
+}
+
+.forget {
+    float: right;
+    font-size: 14px;
+}
+
+#submitter {
+    margin: 50px auto;
 }

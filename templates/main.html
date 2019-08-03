@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <script src="{% static 'js/jquery-1.11.3.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/websocket.js' %}"></script>
 </head>
 <body>
     <div id="left">
@@ -21,13 +22,13 @@
         </div>
         <div id="dropdown_set">
             <p class="set_item">
-                <a href="/verify/personal_set#01">个人信息</a>
+                <a target="_blank" href="/verify/personal_set#01">个人信息</a>
             </p>
             <p class="set_item">
-                <a href="/verify/personal_set#02">界面设置</a>
+                <a target="_blank" href="/verify/personal_set#02">界面设置</a>
             </p>
             <p class="set_item">
-                <a href="/verify/personal_set#03">意见反馈</a>
+                <a target="_blank" href="/verify/personal_set#03">意见反馈</a>
             </p>
             <p class="set_item">
                 <a href="">退出登陆</a>
@@ -45,18 +46,24 @@
                             <li>深圳</li>
                             <li>武汉</li>
                             <li>郑州</li>
+                            <li>合肥</li>
+                            <li>长沙</li>
+                            <li>南京</li>
+                            <li>杭州</li>
+                            <li>青岛</li>
+                            <li>太原</li>
                         </ol>
                     </li>
                 </ul>
             </div>
-            <img src="" alt=""><!--待添加天气图片-->
-            <span>温度</span>
+            <span id="s01">{{weather.0}}</span><!--待添加天气图片-->
+            <span id="s02">{{weather.1}}</span>
         </div>
         <div id="search_box">
             <a href="#">邮箱</a>
             <span>
                 <input id="search" type="text">
-                <label for="search">添加</label>
+                <button id="add_friend">添加</button>
             </span>
         </div>
         <div data-target="#list_chat" id="chatlist" class="table_item">聊天列表</div>
@@ -66,16 +73,16 @@
             {# for ... #}
             <div class="chat_item">
                 <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <span class="f_name">好友名称</span>
-                <span class="info">信息</span>
-                <span class="time">时间</span>
+                <span class="f_name">好友名称1</span>
+                <span class="info">信息1</span>
+                <span class="time">时间1</span>
             </div>
             {# endfor #}
             <div class="chat_item">
                 <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <span class="f_name">好友名称</span>
-                <span class="info">信息</span>
-                <span class="time">时间</span>
+                <span class="f_name">好友名称2</span>
+                <span class="info">信息2</span>
+                <span class="time">时间2</span>
             </div>
             <div class="chat_item">
                 <img src="{% static 'images/timg.jpeg' %}" alt="">
@@ -127,16 +134,16 @@
             </div>
         </div>
         <div id="list_news">
-            {# for... #}
-            <div class="news_item">
-                <a href="#"><div>新闻title</div></a>
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
+            {% for news in news_list %}
+            <div  class="news_item">
+                <a target="_blank" href="{{news.1}}"><div>{{news.2}}</div></a>
+                <img src="{{news.0}}" alt="">
             </div>
-            <div class="news_item">
-                <a href="#"><div>新闻title</div></a>
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
-            </div>
-            {# endfor #}
+            <!--<div style="background:green;" class="news_item">-->
+                <!--<a href="#"><div>新闻title</div></a>-->
+                <!--<img src="{% static 'images/timg.jpeg' %}" alt="">-->
+            <!--</div>-->
+            {% endfor %}
         </div>
         <div id="list_friend">
             <div class="friend_item">
@@ -163,19 +170,21 @@
                 <!--<input type="file">-->
                 <img src="" alt=""><!--待添加'待定'图片-->
             </div>
-            <textarea name="" id="chat_input" cols="30" rows="10"></textarea>
+            <textarea id="chat_input"></textarea>
             <div id="chat_btn">
                 <span>按下Enter换行</span>
-                <button>发送</button>
+                <button id="send_info">发送</button>
             </div>
-    </div>
+        </div>
 
     </div>
-    <div id="right_news">
-        <h1>新闻</h1>
-    </div>
+    <!--<div id="right_news">-->
+        <!--<h1>新闻</h1>-->
+    <!--</div>-->
     <div id="right_friend">
-        <h1>好友信息</h1>
+        <div id="right_friend_hd">
+            <div id="right_friend_title">详细信息</div>
+        </div>
     </div>
 </body>
 </html>
