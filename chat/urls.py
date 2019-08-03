@@ -8,4 +8,7 @@ urlpatterns=[
   url(r"friend_id$",views.add_friend),
   # 推送好友列表
   url(r"friend_list$",views.send_friend),
+  # 刷新天气
+  url(r'^get_weather',views.city_weather)
+
 ]

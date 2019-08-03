@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 import pymysql
@@ -46,6 +48,21 @@ def chat(request):
     news_list = get_news()
     return render(request, "main.html", locals())
 
+# 刷新天气
+def city_weather(request):
+  city = request.GET.get('city', '')
+  print(city)
+  url = "http://www.weather.com.cn/weather1d/{}.shtml".format(get_city_code(city))
+  response = requests.get(url)
+  response.encoding = 'utf-8'
+  aim = re.findall('<input type="hidden" id="hidden_title" value=".*?\w{2}  (.*?)  (.*?)"',
+                   response.text, re.S)
+  # tem = aim[0][1]
+  # des = aim[0][0]
+  # dic = {'tem':tem,'des':des}
+  resText = json.dumps(aim[0])
+  print(resText)
+  return  HttpResponse(resText)
 
 def send_message(request):
   if request.method == "GET":
@@ -138,7 +155,7 @@ def get_city_code(city):
                          port=3306,
                          user='root',
                          password='123456',
-                         database='webchat_db',
+                         database='webchat',
                          charset="utf8")
   cursor = conn.cursor()
   sql = '''select code from city_code where city="%s";''' % (city)
