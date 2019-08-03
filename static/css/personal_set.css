@@ -1,101 +1,176 @@
-#setBody,#setFoot{
-    width:800px;height:100%;
-    margin:0 auto;
-}
-#info{
-    margin-top:10px;
-}
-h1{
-    color:#000;
-    background:skyblue;
-}
-label{
-    color:#000;
-}
-#d01{
-    position:relative;
-    height:450px;
-}
-img{
-    width:40px;height:40px;
-    position:absolute;
-    left:20px;
-}
-#icon{
-    position:absolute;
-    display:none;
-}
-#upload{
-    position:absolute;
-    top:40px;left:15px;
+/* 用户信息修改界面 */
+#bg img {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+    z-index: -100;
 }
 
-#d02{
-    position:absolute;
-    left:100px;top:10px;
+#setBody {
+    color: #000;
+    font-size: 14px;
+
 }
 
-#d03{
-    position:absolute;
-    left:400px;top:10px;
+#setBody,
+#setFoot {
+    width: 800px;
+    height: 100%;
+    margin: 0 auto;
 }
 
-#d04{
-    position:absolute;
-    left:100px;top:40px;
+#info {
+    margin-top: 150px;
+    height: 420px;
+    background: #ffffff
 }
 
-#d04 div{
-    border:1px solid grey;
-    display:inline-block;
-    width:180px;height:20px;
-}
-#d05{
-    position:absolute;
-    left:400px;top:40px;
+h1 {
+    color: #000;
+    background: skyblue;
 }
 
-#d06{
-   position:absolute;
-   left:20px;top:70px;
+#float-left {
+    width: 150px;
+    height: 400px;
+
+    margin-right: 20px;
+    margin-top: 20px;
+
+    float: left;
 }
 
-#d07{
-    position:absolute;
-    left:400px;top:70px;
+#float-left li {
+    /* height: 50px; */
+    text-align: center;
+    border: 0.5px solid #d0d4d9;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e1e4e8;
+    display: block;
+    /* font-size: 13px; */
+    font-weight: 600;
+    line-height: 20px;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 8px 10px;
+
 }
 
-#d08{
-    position:absolute;
-    left:20px;top:100px;
-}
-#d09{
-    position:absolute;
-    left:400px;top:100px;
-}
-#d10{
-    position:absolute;
-    left:20px;top:130px;
-}
-#d10 #per_sign{
-    width:700px;height:150px;
-    border:1px solid grey;
+#float-left li>a {
+    color: #0366d6;
+    font-weight: 400;
 }
 
-/*密码修改*/
-h3{
-    position:absolute;
-    top:310px;
+#float-left #self {
+    border-left: 5px solid #ff0035;
 }
-#mod_pwd{
-    position:absolute;
-    left:20px;top:330px;
+
+#float-left #self>a {
+    color: #000;
+    font-weight: 600;
 }
-.pwd{
-    display:inline-block;
-    border:1px solid grey;
-    width:200px;height:20px;
+
+#centent {
+    position: relative;
+    float: right;
+    width: 610px;
+    height: 400px;
+    margin-left: 20px;
+    margin-top: 20px;
+    color: #000;
+}
+
+#pub {
+    position: fixed;
+    width: 400px;
+    height: 300px;
+    float: left;
+    margin-top: 10px;
+}
+
+#pub tr>td:first-child {
+    width: 145px;
+    font-weight: 400;
+    /* text-align: right */
+}
+
+#pub tr>td:last-child {
+    width: 250px;
+}
+
+#per_sign_title {
+    vertical-align: text-top;
+}
+
+#image {
+    float: right;
+    width: 160px;
+    height: 200px;
+    padding: 5px;
+    margin-right: 20px;
+}
+
+#image img {
+    width: 150px;
+    height: 150px;
+    /* border: 5px solid #9b9c9e; */
+}
+
+#image input {
+    /* width: 80px; */
+    margin-top: 20px;
+    display: block;
+    text-align: center;
+    border: gray;
+    /* background: #ff0035; */
+    /* color:white; */
+}
+
+#image button,
+#per_btn,
+#pwd_btn {
+    border-style: none;
+    display: block;
+    background: #ff0035;
+    color: white;
+    width: 100px;
+    height: 35px;
+    border-radius: 20px;
+    box-shadow: none;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 15px auto;
+}
+
+#per_btn{
+    position: absolute;
+    bottom: 10px;
+    left: 26%;
 }
 
 
 
+
+
+/* 密码修改界面 */
+#pwd_table {
+    margin-top: 10px;
+    height: 120px;
+    width: 500px;
+}
+
+#pwd_table tr>td:first-child {
+    width: 250px;
+    font-weight: 400;
+}
+
+#pwd_table tr>td:last-child {
+    width: 200px;
+}
+#pwd_btn {
+    position: absolute;
+    bottom: 150px;
+    left: 26%;
+}
