@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket_test</title>
+    {% load static %}
+    <script src="{% static 'js/jquery-1.11.3.js' %}"></script>
+    <script src="{% static 'js/websocket.js' %}"></script>
+</head>
+<body>
+    <button id="close_websocket" name="关闭">关闭</button>
+    <button id="send_message" name="打开">发送</button>
+    <button id="send_message1" name="打开">发送1</button>
+    <h4>显示内容</h4>
+    <input type="text" id="message">
+</body>
+</html>
