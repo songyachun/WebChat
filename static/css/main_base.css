@@ -8,6 +8,7 @@ body{
     font:12px "微软雅黑","黑体";
     color:#9a9a9a;
     background:#f1f3f4;
+    position:relative;
 }
 a{
     text-decoration:none;

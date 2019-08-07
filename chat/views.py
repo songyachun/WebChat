@@ -251,8 +251,10 @@ def add_friend(request):
   if request.is_websocket():
     for messages in request.websocket:
       messages=json.loads(messages)
+      print(messages,'=========')
       # 获取add_friend的步骤
       step=messages.get("step")
+      print(step,type(step),'============')
       sender=messages.get("sender")
       sender_query=User.objects.filter(username=sender)
       # 判断发送者和接收者是否存在
@@ -264,36 +266,40 @@ def add_friend(request):
       if not reciver_query:
         request.websocket.send(b'{"code":102,"error":"The reciver is not existed"}')
         continue
-      type = messages.get("type")
-      print(type)
-      type_query = MessagesType.objects.filter(MT_Name=str(type))
-      if not type_query:
-        request.websocket.send(b'{"code":102,"error":"The type is not existed")}')
-        continue
+      dataType = messages.get("dataType")
+      # type_query = MessagesType.objects.filter(MT_Name=str(dataType))
+      # if not type_query:
+      #   request.websocket.send(b'{"code":102,"error":"The type is not existed"}')
+      #   continue
       # 接收申请请求
-      if step=="0":
-        print(sender_query,reciver_query,type_query)
-        # 添加消息
-        Messages.objects.create(M_status="0",
-                                M_MessagesTypeID=type_query[0],
-                                M_FromUserID=sender_query[0],
-                                M_ToUserID=reciver_query[0]
-                                )
+      if step==0:
+        # print(sender_query,reciver_query,type_query)
+        # # 添加消息
+        # Messages.objects.create(M_status="0",
+        #                         M_MessagesTypeID=type_query[0],
+        #                         M_FromUserID=sender_query[0],
+        #                         M_ToUserID=reciver_query[0]
+        #                         )
+        result = {"code":200,"sender":sender_query[0].username,"reciver":reciver_query[0].username,
+                  "dataType":0,"step":1}
       # 发送申请响应
-      elif step==1:
-        pass
-      # 接收应答请求
+  #     elif step==1:
+  #       pass
+  #     # 接收应答请求
+  #     elif step==2:
+  #       pass
+  #     # 发送应达响应
       elif step==2:
-        pass
-      # 发送应达响应
-      elif step==3:
-        pass
-      print(messages)
-      request.websocket.send(b'{"title":1}')
-  else:
-    messages = request.GET
-    print(messages)
-    return render(request, "test.html")
+          result = {"code": 200, "sender": sender_query[0].username, "reciver": reciver_query[0].username,
+                    "dataType": 0, "step":3,"status":1}
+      result_str = json.dumps(result)
+      request.websocket.send(result_str.encode())
+  #     print(messages)
+  #     request.websocket.send(b'{"title":1}')
+  # else:
+  #   messages = request.GET
+  #   print(messages)
+  #   return render(request, "test.html")
 
 # 发送好友列表
 @accept_websocket
@@ -310,7 +316,7 @@ def send_friend(request):
 # 查询数据库,返回城市对应的编码
 def get_city_code(city):
   # 连接数据库,charset参数必填
-  conn = pymysql.connect(host='localhost',
+  conn = pymysql.connect(host='176.140.10.214',
                          port=3306,
                          user='root',
                          password='123456',
