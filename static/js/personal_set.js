@@ -13,6 +13,11 @@ $(function () {
 
         };
     });
+
+    laydate.render({
+        elem: '#birthday' //指定元素
+      });
+
     // 修改个人信息
     $("#per_btn").click(function () {
         // 1. 创建异步对象xhr
@@ -24,6 +29,8 @@ $(function () {
         var gender = $('input:radio[name="gender"]:checked').val()
         var birthday = $("#birthday").val();
         var address = $("#address").val();
+        var city = $("#city").val();
+        var provinces = $("#provinces").val();
         var mail = $("#mail").val();
         var phone_num = $("#phone_num").val();
         var per_sign = $("#per_sign").val();
@@ -33,7 +40,8 @@ $(function () {
         console.log(age);
         console.log(gender);
         console.log(birthday);
-        console.log(address);
+        console.log(provinces);
+        console.log(city);
         console.log(mail);
         console.log(phone_num);
         console.log(per_sign);
@@ -54,40 +62,38 @@ $(function () {
             "application/x-www-form-urlencoded"
         );
         var csrf = $("[name='csrfmiddlewaretoken']").val();
-        var params = "username+" + username + "&nickname=" + nickname + "&age=" + age + "&gender=" + gender + "&birthday=" + birthday + "&address=" + address + "&mail=" + mail + "&phone_num=" + phone_num + "&per_sign=" + per_sign;
+        var params = "username+" + username + "&nickname=" + nickname + "&age=" + age + "&gender=" + gender + "&birthday=" + birthday + "&provinces=" + provinces + "&city=" + city + "&mail=" + mail + "&phone_num=" + phone_num + "&per_sign=" + per_sign;
         console.log(params)
         // 4. 发送请求
         xhr.send(params);
     });
     // 上传图片
     $("#avatar_btn").click(function () {
-        // 1. 创建异步对象xhr
-        var xhr = createXhr();
-        // 2. 创建请求
-        var avatar = $("#icon").val();
-        console.log(avatar)
-        xhr.open("post", "/chat/personal_set", true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                if (xhr.responseText == '1') {
-                    alert("上传成功");
-                    window.location.reload()
-                } else {
-                    alert("上传失败");
-                }
-            }
-        }
-        xhr.setRequestHeader(
-            "Content-Type",
-            "application/x-www-form-urlencoded"
-        );
-        var csrf = $("[name='csrfmiddlewaretoken']").val();
-        var params = 'avatar=' + avatar
-        console.log(params)
-        // 4. 发送请求
-        xhr.send(params);
 
-    });
+        var files = $("#icon").get(0).files[0]; //获取file控件中的内容
+        console.log(files)
+        formdata = new FormData();
+        formdata.append("avatar", files);
+        console.log(formdata)
+        $.ajax({
+            type: "POST",
+            url: "/chat/personal_set1",
+            contentType: false,
+            processData: false,
+            data: formdata,
+            success: function (data) {
+                var data = JSON.parse(data);
+                console.log(data)
+                alert("上传成功");
+                window.location.reload()
+                console.log("请求成功之后，调用接口返回的数据");
+            }
+        });
+
+    })
+
+
+
     // 修改密码
     $("#pwd_btn").click(function () {
         // 1. 创建异步对象xhr

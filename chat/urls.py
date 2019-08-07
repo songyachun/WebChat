@@ -12,6 +12,8 @@ urlpatterns=[
   url(r'^get_weather',views.city_weather),
   # 修改个人信息
   url(r'^personal_set$', views.mod_user_info),
+    # 修改个人信息
+  url(r'^personal_set1$', views.upload_avatar),
   # 修改密码
   url(r'^change_password$', views.mod_pwd),
   # ...

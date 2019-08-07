@@ -13,49 +13,50 @@ from verify import models, views
 from webchat import settings
 from verify.views import csrf_exempt
 
-
 # 函数装饰器，检查用户是否登入，没有登入跳转登入页面
 from verify.models import User, Messages, MessagesType
 
 
 def check_login(fn):
-  def warp(request, *args, **kwargs):
-    if "user" not in request.session:
-      # 返回登录界面
-      return HttpResponseRedirect("/verify/signin")
-    else:
-      return fn(request, *args, **kwargs)
-  return warp
+    def warp(request, *args, **kwargs):
+        if "user" not in request.session:
+            # 返回登录界面
+            return HttpResponseRedirect("/verify/signin")
+        else:
+            return fn(request, *args, **kwargs)
+
+    return warp
 
 
 @check_login
 def chat(request):
-  if request.method == "GET":
-    # 邮箱链接
-    email_address_dict = {
-      "163.com": "https://mail.163.com/",
-      "qq.com": "https://mail.qq.com/"
-    }
-    username = request.session["user"]["name"]
-    user = models.User.objects.filter(username=username)
-    email_sign = re.findall(r"@(.*)", user[0].email)
-    print(email_sign)
-    email_link = email_address_dict[email_sign[0]]
+    if request.method == "GET":
+        # 邮箱链接
+        email_address_dict = {
+            "163.com": "https://mail.163.com/",
+            "qq.com": "https://mail.qq.com/"
+        }
+        username = request.session["user"]["name"]
+        user = models.User.objects.filter(username=username)
+        email_sign = re.findall(r"@(.*)", user[0].email)
+        print(email_sign)
+        # email_link = email_address_dict[email_sign[0]]
 
-    # 爬虫相关设置
-    ip = request.META['REMOTE_ADDR']
-    # print(ip)
-    weather = get_weather(ip)
-    news_list = get_news()
-    return render(request, "main.html", locals())
+        # 爬虫相关设置
+        ip = request.META['REMOTE_ADDR']
+        # print(ip)
+        weather = get_weather(ip)
+        news_list = get_news()
+        return render(request, "main.html", locals())
 
 
 # 修改密码
+from django.contrib.auth.hashers import make_password, check_password
 @check_login
 def mod_pwd(request):
     if request.method == 'GET':
         username = request.session["user"]["name"]
-        return render(request,'change_password.html',locals())
+        return render(request, 'change_password.html', locals())
     if request.method == 'POST':
         try:
             username = request.session["user"]["name"]
@@ -65,9 +66,18 @@ def mod_pwd(request):
 
         # 修改密码
         # 输入的旧密码old_pwd，新密码new_pwd1,new_pwd2
-        old_pwd = request.POST.get('old_password')
-        new_pwd1 = request.POST.get('password1')
-        new_pwd2 = request.POST.get('password2')
+
+        jsonstr = request.POST.get('jsonstr')
+        json_dict = json.loads(jsonstr)
+        print(json_dict['old_password'])
+        print(json_dict['password1'])
+        print(json_dict['password2'])
+
+        old_pwd = json_dict['old_password']
+        new_pwd1 = json_dict['password1']
+        new_pwd2 = json_dict['password2']
+
+        print('user.password:',user.password)
 
         # 密码约束 由6-12位字母、数字组成
         if not re.match(r"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$", new_pwd1):
@@ -75,28 +85,31 @@ def mod_pwd(request):
             return render(request, "change_password.html", locals())
 
         old_pwd = views.make_password(old_pwd, "a", 'pbkdf2_sha1')
-        if user.password == old_pwd:
+
+
+        if check_password(User.password,old_pwd):
             if new_pwd1 == new_pwd2:
                 new_pwd2 = views.make_password(new_pwd2, "a", 'pbkdf2_sha1')
                 user.password = new_pwd2
                 print('***********************')
-                print('user.password',user.password)
+                print('user.password', user.password)
                 print('***********************')
 
                 user.save()
-                return HttpResponse(0)
+                return HttpResponse('1')
             else:
-                new_pwd_error = '新密码输入不一致'
-                return render(request, 'change_password.html', locals())
+                return HttpResponse('0')
         else:
-            old_pwd_error = '旧密码输入错误'
-            return render(request, 'change_password.html', locals())
+            return HttpResponse('0')
+
 
 def inter_layout(request):
-    return render(request,'inter_layout.html')
+    return render(request, 'inter_layout.html')
+
 
 def feedback(request):
-    return render(request,'feedback.html')
+    return render(request, 'feedback.html')
+
 
 # 修改昵称 年龄　生日　地址　电子邮件　电话号码
 @csrf_exempt
@@ -154,6 +167,8 @@ def mod_user_info(request):
 
         # 实例化Province一个城市对象
         province = models.Province.objects.create(P_name=address)
+        print('province.P_name:',province.P_name)
+        print('province.P_ID:',province.P_ID)
         city = models.City.objects.create(
             C_Name='11',
             P_ProcvinceID=province)
@@ -163,8 +178,9 @@ def mod_user_info(request):
             userinfo = models.UserInfo.objects.get(user=user)
             userinfo.nickname = nickname
             userinfo.age = age
-            userinfo.bithday = birthday
+            userinfo.birthday = birthday
             userinfo.sex = sex
+            userinfo.profile = per_sign
             userinfo.save()
         except:
             pass
@@ -175,7 +191,7 @@ def mod_user_info(request):
                 birthday=birthday,
                 province_id=province,
                 user=user,  # 增加一对一属性
-                city_id= city,
+                city_id=city,
 
             )
 
@@ -195,37 +211,41 @@ def upload_avatar(request):
         except:
             return HttpResponse('用户未登')
 
+        avatar = request.FILES.get('avatar','')
 
-        avatar = request.FILES.get('avatar')
         # 写入头像文件到static/avatar
-        filename = os.path.join(settings.MEDIA_ROOT, avatar.name)
-        with open(filename, 'wb') as f:
-            f.write(avatar.file.read())
-        print('avatar', avatar)
-        user.avatar = avatar
-        user.save()
+        # filename = os.path.join(settings.MEDIA_ROOT, avatar.name)
+        # print(filename)
+        # with open(filename, 'wb') as f:
+        #     f.write(avatar.file.read())
+        print('avatar:', avatar)
+        print(type(avatar) )
+        userinfo = models.UserInfo.objects.get(user=user)
+        userinfo.profile_head = avatar
+        userinfo.save()
         return HttpResponse("1")
 
 
 # 刷新天气
 def city_weather(request):
-  city = request.GET.get('city', '')
-  print(city)
-  url = "http://www.weather.com.cn/weather1d/{}.shtml".format(get_city_code(city))
-  response = requests.get(url)
-  response.encoding = 'utf-8'
-  aim = re.findall('<input type="hidden" id="hidden_title" value=".*?\w{2}  (.*?)  (.*?)"',
-                   response.text, re.S)
-  # tem = aim[0][1]
-  # des = aim[0][0]
-  # dic = {'tem':tem,'des':des}
-  resText = json.dumps(aim[0])
-  print(resText)
-  return  HttpResponse(resText)
+    city = request.GET.get('city', '')
+    print(city)
+    url = "http://www.weather.com.cn/weather1d/{}.shtml".format(get_city_code(city))
+    response = requests.get(url)
+    response.encoding = 'utf-8'
+    aim = re.findall('<input type="hidden" id="hidden_title" value=".*?\w{2}  (.*?)  (.*?)"',
+                     response.text, re.S)
+    # tem = aim[0][1]
+    # des = aim[0][0]
+    # dic = {'tem':tem,'des':des}
+    resText = json.dumps(aim[0])
+    print(resText)
+    return HttpResponse(resText)
+
 
 def send_message(request):
-  if request.method == "GET":
-    return render(request, "test.html")
+    if request.method == "GET":
+        return render(request, "test.html")
 
 
 # @require_websocket
@@ -248,84 +268,85 @@ def send_message(request):
 # 处理好友请求
 @accept_websocket
 def add_friend(request):
-  if request.is_websocket():
-    for messages in request.websocket:
-      messages=json.loads(messages)
-      # 获取add_friend的步骤
-      step=messages.get("step")
-      sender=messages.get("sender")
-      sender_query=User.objects.filter(username=sender)
-      # 判断发送者和接收者是否存在
-      if not sender_query:
-        request.websocket.send(b'{"code":101,"error":"The sender is not existed"}')
-        continue
-      reciver=messages.get("reciver")
-      reciver_query = User.objects.filter(username=reciver)
-      if not reciver_query:
-        request.websocket.send(b'{"code":102,"error":"The reciver is not existed"}')
-        continue
-      type = messages.get("type")
-      print(type)
-      type_query = MessagesType.objects.filter(MT_Name=str(type))
-      if not type_query:
-        request.websocket.send(b'{"code":102,"error":"The type is not existed")}')
-        continue
-      # 接收申请请求
-      if step=="0":
-        print(sender_query,reciver_query,type_query)
-        # 添加消息
-        Messages.objects.create(M_status="0",
-                                M_MessagesTypeID=type_query[0],
-                                M_FromUserID=sender_query[0],
-                                M_ToUserID=reciver_query[0]
-                                )
-      # 发送申请响应
-      elif step==1:
-        pass
-      # 接收应答请求
-      elif step==2:
-        pass
-      # 发送应达响应
-      elif step==3:
-        pass
-      print(messages)
-      request.websocket.send(b'{"title":1}')
-  else:
-    messages = request.GET
-    print(messages)
-    return render(request, "test.html")
+    if request.is_websocket():
+        for messages in request.websocket:
+            messages = json.loads(messages)
+            # 获取add_friend的步骤
+            step = messages.get("step")
+            sender = messages.get("sender")
+            sender_query = User.objects.filter(username=sender)
+            # 判断发送者和接收者是否存在
+            if not sender_query:
+                request.websocket.send(b'{"code":101,"error":"The sender is not existed"}')
+                continue
+            reciver = messages.get("reciver")
+            reciver_query = User.objects.filter(username=reciver)
+            if not reciver_query:
+                request.websocket.send(b'{"code":102,"error":"The reciver is not existed"}')
+                continue
+            type = messages.get("type")
+            print(type)
+            type_query = MessagesType.objects.filter(MT_Name=str(type))
+            if not type_query:
+                request.websocket.send(b'{"code":102,"error":"The type is not existed")}')
+                continue
+            # 接收申请请求
+            if step == "0":
+                print(sender_query, reciver_query, type_query)
+                # 添加消息
+                Messages.objects.create(M_status="0",
+                                        M_MessagesTypeID=type_query[0],
+                                        M_FromUserID=sender_query[0],
+                                        M_ToUserID=reciver_query[0]
+                                        )
+            # 发送申请响应
+            elif step == 1:
+                pass
+            # 接收应答请求
+            elif step == 2:
+                pass
+            # 发送应达响应
+            elif step == 3:
+                pass
+            print(messages)
+            request.websocket.send(b'{"title":1}')
+    else:
+        messages = request.GET
+        print(messages)
+        return render(request, "test.html")
+
 
 # 发送好友列表
 @accept_websocket
 def send_friend(request):
-  if request.is_websocket():
-    for message in request.websocket:
-      request.websocket.send(message)
-      print(message)
-  else:
-    message = request.GET
-    print(message)
-    return render(request, "test.html")
+    if request.is_websocket():
+        for message in request.websocket:
+            request.websocket.send(message)
+            print(message)
+    else:
+        message = request.GET
+        print(message)
+        return render(request, "test.html")
+
 
 # 查询数据库,返回城市对应的编码
 def get_city_code(city):
-  # 连接数据库,charset参数必填
-  conn = pymysql.connect(host='localhost',
-                         port=3306,
-                         user='root',
-                         password='123456',
-                         database='webchat_db',
-                         charset="utf8")
-  cursor = conn.cursor()
-  sql = '''select code from city_code where city="%s";''' % (city)
-  cursor.execute(sql)
-  # 查询结果
-  city_code = cursor.fetchone()
-  if not city_code:
-    return 101280601
-  conn.close()
-  return city_code[0]
-
+    # 连接数据库,charset参数必填
+    conn = pymysql.connect(host='127.0.0.1',
+                           port=3306,
+                           user='root',
+                           password='123456',
+                           database='webchat_db',
+                           charset="utf8")
+    cursor = conn.cursor()
+    sql = '''select code from city_code where city="%s";''' % (city)
+    cursor.execute(sql)
+    # 查询结果
+    city_code = cursor.fetchone()
+    if not city_code:
+        return 101280601
+    conn.close()
+    return city_code[0]
 
 
 # 根据IP获取城市
@@ -342,38 +363,37 @@ def get_city(ip):
 
 # 根据客户端ip获取天气
 def get_weather(ip):
-  try:
-    city = get_city(ip)
-  except:
-    city = "深圳"
-  url = "http://www.weather.com.cn/weather1d/{}.shtml".format(get_city_code(city))
-  response = requests.get(url)
-  response.encoding = 'utf-8'
-  # 抓取当天气温(非实时)
-  aim = re.findall('<input type="hidden" id="hidden_title" value=".*?\w{2}  (.*?)  (.*?)"',
-                   response.text, re.S)
-  print("今日气温：%s %s" % aim[0])
-  return aim[0]
+    try:
+        city = get_city(ip)
+    except:
+        city = "深圳"
+    url = "http://www.weather.com.cn/weather1d/{}.shtml".format(get_city_code(city))
+    response = requests.get(url)
+    response.encoding = 'utf-8'
+    # 抓取当天气温(非实时)
+    aim = re.findall('<input type="hidden" id="hidden_title" value=".*?\w{2}  (.*?)  (.*?)"',
+                     response.text, re.S)
+    print("今日气温：%s %s" % aim[0])
+    return aim[0]
 
 
 # 爬取新华网资讯
 def get_news():
-  news_list = []
-  headers = {
-    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}
-  url = "http://www.xinhuanet.com/politics/"
-  response = requests.get(url, headers=headers)
-  text = response.content.decode('utf-8')
-  # 初步过滤
-  info = re.findall(r'<div class="wrap">.*?</a></div>', text)
-  # 获得五条新闻
-  n = 0
-  for i in info:
-    url_img = re.findall(r'data-original=(.*?) /> ', i)
-    url_html = re.findall(r'<a href="(.*?)" target="_blank">', i)
-    title = re.findall(r'_blank">(.*?)</a></div>', i)
-    news_list.append(url_img + url_html + title)
-    n += 1
-    if n > 4:
-      return news_list
-
+    news_list = []
+    headers = {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}
+    url = "http://www.xinhuanet.com/politics/"
+    response = requests.get(url, headers=headers)
+    text = response.content.decode('utf-8')
+    # 初步过滤
+    info = re.findall(r'<div class="wrap">.*?</a></div>', text)
+    # 获得五条新闻
+    n = 0
+    for i in info:
+        url_img = re.findall(r'data-original=(.*?) /> ', i)
+        url_html = re.findall(r'<a href="(.*?)" target="_blank">', i)
+        title = re.findall(r'_blank">(.*?)</a></div>', i)
+        news_list.append(url_img + url_html + title)
+        n += 1
+        if n > 4:
+            return news_list

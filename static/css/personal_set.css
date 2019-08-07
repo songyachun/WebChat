@@ -112,7 +112,8 @@ h1 {
     margin-right: 20px;
 }
 
-#image img {
+#image #img_path,
+#img_path img {
     width: 150px;
     height: 150px;
     /* border: 5px solid #9b9c9e; */

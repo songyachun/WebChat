@@ -85,12 +85,20 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'webchat_db',  # 数据库名称,需要自己定义
+    #     'USER': 'root',
+    #     'PASSWORD': '123456',  # 管理员密码
+    #     'HOST': '127.0.0.1',
+    #     'PORT': 3306,
+    # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'webchat_db',  # 数据库名称,需要自己定义
         'USER': 'root',
         'PASSWORD': '123456',  # 管理员密码
-        'HOST': '127.0.0.1',
+        'HOST': '176.140.10.214',
         'PORT': 3306,
     }
 }
@@ -139,9 +147,7 @@ STATICFILES_DIRS = (
 # session在浏览器重启后过期
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-# MEDIA_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/avatar')
 
-
-
-
+# 媒体资源地址:图片,视频
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
