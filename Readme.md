@@ -125,13 +125,13 @@
    - 申请好友
      - url：ws://127.0.0.1:8000/chat/friend_id
      - 通讯方式：websocket
-     - 请求格式：json{"code":200, “sender”:请求者，"reciver":"接收者"，”step“：0，"type":0}
-     - 请求格式：json{code":200, “sender”:请求者，"reciver":"接收者"，”step“：1，"type":0}
+     - 请求格式：json{"code":200, “sender”:请求者，"reciver":"接收者"，”step“：0，"dataType":0}
+     - 请求格式：json{code":200, “sender”:请求者，"reciver":"接收者"，”step“：1，"dataType":0}
    - 回复请求
      - url：ws://127.0.0.1:8000/chat/friend_id
      - 通讯方式：websocket
-     - 请求格式：json{code":200, “sender”:请求者，"reciver":"接收者"，”step“：2，"status":"回复状态"，"type":0}
-     - 请求格式：json{code":200, “sender”:请求者，"reciver":"接收者"，”step“：3，"status":"回复状态"，"type":0}
+     - 请求格式：json{code":200, “sender”:请求者，"reciver":"接收者"，”step“：2，"status":"回复状态"，"dataType":0}
+     - 请求格式：json{code":200, “sender”:请求者，"reciver":"接收者"，”step“：3，"status":"回复状态"，"dataType":0}
 2. 推送好友列表
    - url：ws://127.0.0.1:8000/chat/friend_list
    - 通讯方式：websocket

@@ -314,3 +314,8 @@ ol>li:hover{
     align-items:center;
     display:-webkit-flex;
 }
+
+#addTips{
+    position:fixed;
+    bottom:50px;right:0;
+}
