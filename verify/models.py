@@ -35,7 +35,7 @@ class UserInfo(models.Model):
     sex=models.IntegerField("性别")
     age=models.IntegerField("年龄")
     birthday=models.CharField("生日",max_length=100,null=True)
-    profile_head = models.ImageField("头像", blank=True, null=True, upload_to="upload")
+    profile_head = models.ImageField("头像", blank=True, null=True, upload_to="avatar/")
     profile=models.CharField("个性签名",max_length=255,null=True)
     user=models.OneToOneField(User)
     # 外键：关联省份表

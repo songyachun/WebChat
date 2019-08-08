@@ -51,7 +51,6 @@ def chat(request):
 
 
 # 修改密码
-from django.contrib.auth.hashers import make_password, check_password
 @check_login
 def mod_pwd(request):
     if request.method == 'GET':
@@ -61,23 +60,17 @@ def mod_pwd(request):
         try:
             username = request.session["user"]["name"]
             user = models.User.objects.filter(username=username)
+            user1 = models.User.objects.get(username=username)
         except:
             return HttpResponse('用户未登录')
 
         # 修改密码
-        # 输入的旧密码old_pwd，新密码new_pwd1,new_pwd2
-
+        # 输入的旧密码old_pwd,新密码new_pwd1,new_pwd2
         jsonstr = request.POST.get('jsonstr')
         json_dict = json.loads(jsonstr)
-        print(json_dict['old_password'])
-        print(json_dict['password1'])
-        print(json_dict['password2'])
-
         old_pwd = json_dict['old_password']
         new_pwd1 = json_dict['password1']
         new_pwd2 = json_dict['password2']
-
-        print('user.password:',user.password)
 
         # 密码约束 由6-12位字母、数字组成
         if not re.match(r"^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$", new_pwd1):
@@ -85,17 +78,12 @@ def mod_pwd(request):
             return render(request, "change_password.html", locals())
 
         old_pwd = views.make_password(old_pwd, "a", 'pbkdf2_sha1')
-
-
-        if check_password(User.password,old_pwd):
+        if user1.password==old_pwd:
             if new_pwd1 == new_pwd2:
                 new_pwd2 = views.make_password(new_pwd2, "a", 'pbkdf2_sha1')
-                user.password = new_pwd2
-                print('***********************')
-                print('user.password', user.password)
-                print('***********************')
+                user1.password = new_pwd2
+                user1.save()
 
-                user.save()
                 return HttpResponse('1')
             else:
                 return HttpResponse('0')
@@ -111,9 +99,14 @@ def feedback(request):
     return render(request, 'feedback.html')
 
 
-# 修改昵称 年龄　生日　地址　电子邮件　电话号码
+
 @csrf_exempt
 def mod_user_info(request):
+    """
+    # 修改昵称 年龄　生日　地址　电子邮件　电话号码
+    :param request:
+    :return:
+    """
     if request.method == 'GET':
         username = request.session["user"]["name"]
         return render(request, 'personal_set.html', locals())
@@ -134,17 +127,19 @@ def mod_user_info(request):
         phone_num = request.POST.get('phone_num', '')
         address = request.POST.get('address', '')
         per_sign = request.POST.get('per_sign', '')
-        # 查看接收到的数据
-        print("****************")
-        print('new_email:', new_email)
-        print('sex:', sex)
-        print('nickname:', nickname)
-        print('age:', age)
-        print('birthday:', birthday)
-        print('phone_num:', phone_num)
-        print('address:', address)
-        print('per_sign:', per_sign)
-        print("****************")
+
+        # 电话号码约束
+        if not re.match(r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}", phone_num):
+            code_error = "无效的手机号"
+            return render(request, "personal_set.html", locals())
+
+        # 邮箱约束
+        if not re.match(r"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$", new_email):
+          email_error = "无效邮箱"
+          return render(request, "personal_set.html", locals())
+        if models.User.objects.filter(email=new_email):
+          email_error = "邮箱已被注册"
+          return render(request, "personal_set.html", locals())
 
         # 修改信息
         # User表
@@ -156,7 +151,6 @@ def mod_user_info(request):
             user.email = new_email
             user.mobile_number = phone_num
             user.save()
-            # return HttpResponse('1')
 
         # UserInfo表
         # 数据转换boy->1 gril->0
@@ -164,11 +158,8 @@ def mod_user_info(request):
             sex = 1
         else:
             sex = 0
-
         # 实例化Province一个城市对象
         province = models.Province.objects.create(P_name=address)
-        print('province.P_name:',province.P_name)
-        print('province.P_ID:',province.P_ID)
         city = models.City.objects.create(
             C_Name='11',
             P_ProcvinceID=province)
@@ -183,7 +174,6 @@ def mod_user_info(request):
             userinfo.profile = per_sign
             userinfo.save()
         except:
-            pass
             userinfo = models.UserInfo.objects.create(
                 nickname=nickname,
                 sex=sex,
@@ -194,7 +184,6 @@ def mod_user_info(request):
                 city_id=city,
 
             )
-
         return HttpResponse('1')
 
 
@@ -211,19 +200,13 @@ def upload_avatar(request):
         except:
             return HttpResponse('用户未登')
 
+        # 获取头像:文件存入media
         avatar = request.FILES.get('avatar','')
-
-        # 写入头像文件到static/avatar
-        # filename = os.path.join(settings.MEDIA_ROOT, avatar.name)
-        # print(filename)
-        # with open(filename, 'wb') as f:
-        #     f.write(avatar.file.read())
-        print('avatar:', avatar)
-        print(type(avatar) )
         userinfo = models.UserInfo.objects.get(user=user)
         userinfo.profile_head = avatar
         userinfo.save()
         return HttpResponse("1")
+
 
 
 # 刷新天气

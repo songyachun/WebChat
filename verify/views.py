@@ -153,8 +153,8 @@ def sign_in(request):
 # 手机短信验证API
 def send_sms(number, mobile):
     url = "http://106.ihuyi.com/webservice/sms.php?method=Submit"  # 请求地址
-    account = "C23589526"  # 提交账户APIID
-    password = "b4915e164e86723594356e4855a9bb62"  # 提交密码APIKEY
+    account = "C08421753"  # 提交账户APIID
+    password = "d1d09eb16c1ba1909d57cbf95e7874df "  # 提交密码APIKEY
 
     # 请求的头部
     headers = {"Content-type": "application/x-www-form-urlencoded",
