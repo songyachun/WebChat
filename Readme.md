@@ -152,3 +152,8 @@
 ## 修改注册界面的获取验证码界面
 1. 注册界面 --> signup.html
 2. 添加输入验证码文本框 name="veri_code"
+
+# # 2019.8.8 完成用户信息修改
+1. 上传头像　chat/views.py--> upload_avatar
+2. 修改密码　chat/views.py-->　mod_pwd
+3. 修改用户基本信息　chat/views.py--> mod_user_info
