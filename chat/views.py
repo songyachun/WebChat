@@ -5,7 +5,8 @@ import pymysql
 import json
 from verify import models
 import requests
-import re, time
+import re
+import time
 from dwebsocket import require_websocket
 from dwebsocket import accept_websocket
 from dwebsocket.websocket import WebSocket
@@ -79,7 +80,7 @@ def mod_pwd(request):
             return render(request, "change_password.html", locals())
 
         old_pwd = views.make_password(old_pwd, "a", 'pbkdf2_sha1')
-        if user1.password==old_pwd:
+        if user1.password == old_pwd:
             if new_pwd1 == new_pwd2:
                 new_pwd2 = views.make_password(new_pwd2, "a", 'pbkdf2_sha1')
                 user1.password = new_pwd2
@@ -100,7 +101,6 @@ def feedback(request):
     return render(request, 'feedback.html')
 
 
-
 @csrf_exempt
 def mod_user_info(request):
     """
@@ -111,23 +111,22 @@ def mod_user_info(request):
     if request.method == 'GET':
         username = request.session["user"]["name"]
         # 获取user表信息
-        user=models.User.objects.get(username=username)
-        email=user.email
-        mobile_number=user.mobile_number
+        user = models.User.objects.get(username=username)
+        email = user.email
+        mobile_number = user.mobile_number
         # 获取userinfo表的信息
-        userinfo=models.UserInfo.objects.get(user=user)
-        nickname=userinfo.nickname
-        avatar=userinfo.profile_head
-        age=userinfo.age
-        sex=userinfo.sex
-        birthday=userinfo.birthday
-        introduction=userinfo.profile
-        profile_head=userinfo.profile_head
-
-
- 
-
+        userinfo = models.UserInfo.objects.get(user=user)
+        nickname = userinfo.nickname
+        avatar = userinfo.profile_head
+        age = userinfo.age
+        sex = userinfo.sex
+        birthday = userinfo.birthday
+        introduction = userinfo.profile
+        profile_head = userinfo.profile_head
+        city=userinfo.city_id
+        prov=userinfo.province_id
         return render(request, 'personal_set.html', locals())
+
     if request.method == 'POST':
         try:
             username = request.session["user"]["name"]
@@ -143,8 +142,15 @@ def mod_user_info(request):
         age = request.POST.get('age', '')
         birthday = request.POST.get('birthday', '')
         phone_num = request.POST.get('phone_num', '')
-        address = request.POST.get('address', '')
+        # address = request.POST.get('address', '')
         per_sign = request.POST.get('per_sign', '')
+        city = request.POST.get('city', '')
+        provinces = request.POST.get('provinces', '')
+        print(provinces)
+        print(city)
+        print(per_sign)
+        print(new_email)
+        print(birthday)
 
         # 电话号码约束
         if not re.match(r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}", phone_num):
@@ -153,22 +159,41 @@ def mod_user_info(request):
 
         # 邮箱约束
         if not re.match(r"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$", new_email):
-          email_error = "无效邮箱"
-          return render(request, "personal_set.html", locals())
-        if models.User.objects.filter(email=new_email):
-          email_error = "邮箱已被注册"
-          return render(request, "personal_set.html", locals())
+            email_error = "无效邮箱"
+            return render(request, "personal_set.html", locals())
+        # if models.User.objects.filter(email=new_email):
+        #     email_error = "邮箱已被注册"
+        #     return render(request, "personal_set.html", locals())
+
+        user.email = new_email
+        user.mobile_number = phone_num
+        user.save()
 
         # 修改信息
+        # province表
+        try:
+            pro = models.Province.objects.get(P_name=provinces)
+            pass
+        except:
+            models.Province.objects.create(P_name=provinces)
+            pro = models.Province.objects.get(P_name=provinces)
+        # city表
+        try:
+            city = models.City.objects.get(C_Name=city)
+            pass
+        except:
+            models.City.objects.create(C_Name=city, P_ProcvinceID=pro)
+            city = models.City.objects.get(C_Name=city)
+
         # User表
-        # 数据库为空则添加否则修改
-        if not models.User.email or not models.User.mobile_number:
-            models.User.objects.create(email=new_email)
-            models.User.mobile_number.objects.create(mobile_number=phone_num)
-        else:
-            user.email = new_email
-            user.mobile_number = phone_num
-            user.save()
+        # # 数据库为空则添加否则修改
+        # if not models.User.email or not models.User.mobile_number:
+        #     models.User.objects.create(email=new_email)
+        #     models.User.mobile_number.objects.create(mobile_number=phone_num)
+        # else:
+        #     user.email = new_email
+        #     user.mobile_number = phone_num
+        #     user.save()
 
         # UserInfo表
         # 数据转换boy->1 gril->0
@@ -176,11 +201,11 @@ def mod_user_info(request):
             sex = 1
         else:
             sex = 0
-        # 实例化Province一个城市对象
-        province = models.Province.objects.create(P_name=address)
-        city = models.City.objects.create(
-            C_Name='11',
-            P_ProcvinceID=province)
+        # # 实例化Province一个城市对象
+        # province = models.Province.objects.create(P_name=address)
+        # city = models.City.objects.create(
+        #     C_Name='11',
+        #     P_ProcvinceID=province)
 
         # 用户有信息则修改,没有则创建
         try:
@@ -190,6 +215,9 @@ def mod_user_info(request):
             userinfo.birthday = birthday
             userinfo.sex = sex
             userinfo.profile = per_sign
+            userinfo.user = user
+            userinfo.province_id = pro
+            userinfo.city_id = city
             userinfo.save()
         except:
             userinfo = models.UserInfo.objects.create(
@@ -197,7 +225,7 @@ def mod_user_info(request):
                 sex=sex,
                 age=age,
                 birthday=birthday,
-                province_id=province,
+                province_id=pro,
                 user=user,  # 增加一对一属性
                 city_id=city,
 
@@ -219,19 +247,19 @@ def upload_avatar(request):
             return HttpResponse('用户未登')
 
         # 获取头像:文件存入media
-        avatar = request.FILES.get('avatar','')
+        avatar = request.FILES.get('avatar', '')
         userinfo = models.UserInfo.objects.get(user=user)
         userinfo.profile_head = avatar
         userinfo.save()
         return HttpResponse("1")
 
 
-
 # 刷新天气
 def city_weather(request):
     city = request.GET.get('city', '')
     print(city)
-    url = "http://www.weather.com.cn/weather1d/{}.shtml".format(get_city_code(city))
+    url = "http://www.weather.com.cn/weather1d/{}.shtml".format(
+        get_city_code(city))
     response = requests.get(url)
     response.encoding = 'utf-8'
     aim = re.findall('<input type="hidden" id="hidden_title" value=".*?\w{2}  (.*?)  (.*?)"',
@@ -278,18 +306,21 @@ def add_friend(request):
             sender_query = User.objects.filter(username=sender)
             # 判断发送者和接收者是否存在
             if not sender_query:
-                request.websocket.send(b'{"code":101,"error":"The sender is not existed"}')
+                request.websocket.send(
+                    b'{"code":101,"error":"The sender is not existed"}')
                 continue
             reciver = messages.get("reciver")
             reciver_query = User.objects.filter(username=reciver)
             if not reciver_query:
-                request.websocket.send(b'{"code":102,"error":"The reciver is not existed"}')
+                request.websocket.send(
+                    b'{"code":102,"error":"The reciver is not existed"}')
                 continue
             type = messages.get("type")
             print(type)
             type_query = MessagesType.objects.filter(MT_Name=str(type))
             if not type_query:
-                request.websocket.send(b'{"code":102,"error":"The type is not existed")}')
+                request.websocket.send(
+                    b'{"code":102,"error":"The type is not existed")}')
                 continue
             # 接收申请请求
             if step == "0":
@@ -357,7 +388,8 @@ def get_city(ip):
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}
     responses = requests.get(url, headers=headers)
     context = responses.content.decode("utf-8")
-    city = re.findall(r'span class="Whwtdhalf w50-0">.*?省(\w+?)市.*?</span>', context)
+    city = re.findall(
+        r'span class="Whwtdhalf w50-0">.*?省(\w+?)市.*?</span>', context)
     print(city)
     return city[0]
 
@@ -368,7 +400,8 @@ def get_weather(ip):
         city = get_city(ip)
     except:
         city = "深圳"
-    url = "http://www.weather.com.cn/weather1d/{}.shtml".format(get_city_code(city))
+    url = "http://www.weather.com.cn/weather1d/{}.shtml".format(
+        get_city_code(city))
     response = requests.get(url)
     response.encoding = 'utf-8'
     # 抓取当天气温(非实时)
