@@ -117,10 +117,11 @@ def feedback(request):
 def mod_user_info(request):
     if request.method == 'GET':
         username = request.session["user"]["name"]
+        # 获取user表信息
         user=models.User.objects.get(username=username)
         email=user.email
         mobile_number=user.mobile_number
-        
+        # 获取userinfo表的信息
         userinfo=models.UserInfo.objects.get(user=user)
         nickname=userinfo.nickname
         avatar=userinfo.profile_head
@@ -128,8 +129,9 @@ def mod_user_info(request):
         sex=userinfo.sex
         birthday=userinfo.birthday
         introduction=userinfo.profile
-
         profile_head=userinfo.profile_head
+
+
  
 
         return render(request, 'personal_set.html', locals())
