@@ -13,6 +13,7 @@ from verify import models, views
 from webchat import settings
 from verify.views import csrf_exempt
 
+
 # 函数装饰器，检查用户是否登入，没有登入跳转登入页面
 from verify.models import User, Messages, MessagesType
 
@@ -116,6 +117,21 @@ def feedback(request):
 def mod_user_info(request):
     if request.method == 'GET':
         username = request.session["user"]["name"]
+        user=models.User.objects.get(username=username)
+        email=user.email
+        mobile_number=user.mobile_number
+        
+        userinfo=models.UserInfo.objects.get(user=user)
+        nickname=userinfo.nickname
+        avatar=userinfo.profile_head
+        age=userinfo.age
+        sex=userinfo.sex
+        birthday=userinfo.birthday
+        introduction=userinfo.profile
+
+        profile_head=userinfo.profile_head
+ 
+
         return render(request, 'personal_set.html', locals())
     if request.method == 'POST':
         try:

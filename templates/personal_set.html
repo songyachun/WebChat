@@ -45,11 +45,11 @@
                 <table id="pub">
                     <tr>
                         <td>NickName:</td>
-                        <td> <input style="width: 240px;" type="text" id="nickname" placeholder="请输入昵称"></td>
+                        <td> <input style="width: 240px;" type="text" id="nickname" placeholder="{{nickname}}" value="{{nickname}}"></td>
                     </tr>
                     <tr>
                         <td>Age:</td>
-                        <td> <input style="width: 240px;" type="text" id="age" placeholder="请输入年龄"></td>
+                        <td> <input style="width: 240px;" type="text" id="age" value="{{age}}"></td>
                     </tr>
                     <tr>
                         <td><span style="color: gray">Account:</span></td>
@@ -70,7 +70,7 @@
                     </tr>
                     <tr>
                         <td>Birthday:</td>
-                        <td><input style="width: 240px;" type="text" name="birthday" placeholder="请输入生日" id="birthday">
+                        <td><input style="width: 240px;" type="text" name="birthday" value="{{birthday}}" id="birthday" >
                         </td>
                     </tr>
                     <tr>
@@ -156,18 +156,18 @@
                     </tr>
                     <tr>
                         <td>E-mail:</td>
-                        <td><input style="width: 240px;" type="text" id="mail" placeholder="{{user.mail}}"></td>
+                        <td><input style="width: 240px;" type="text" id="mail" value="{{email}}"></td>
                     </tr>
                     <tr>
                         <td>PhoneNumber:</td>
-                        <td><input style="width: 240px;" type="text" id="phone_num" placeholder="{{user.mobil_phone}}">
+                        <td><input style="width: 240px;" type="text" id="phone_num" value="{{mobile_number}}">
                         </td>
                     </tr>
                     <tr>
                         <td id="per_sign_title">PersonalSignature：</td>
 
                         <td>
-                            <textarea style="width: 240px;" name="" id="per_sign" cols="21" rows="5"></textarea>
+                            <textarea style="width: 240px;" name="" id="per_sign" cols="21" rows="5" >{{introduction}}</textarea>
                         </td>
                     </tr>
                 </table>
@@ -176,7 +176,7 @@
                     <!-- TODO 获取图片 -->
                     <br>
                     <div id="img_path">
-                        <img src="{% static 'images/timg.jpeg' %}" alt="">
+                        <img src="http://127.0.0.1:8000/media/{{profile_head}}" alt="">
                     </div>
                     <br>
                     <input type="file" id="icon" maxlength="30">
