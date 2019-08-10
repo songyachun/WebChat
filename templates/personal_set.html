@@ -12,6 +12,9 @@
     <script src="../static/js/jquery-1.11.3.js"></script>
     <script src="../static/js/common.js"></script>
     <script src="../static/js/personal_set.js"></script>
+    <script src="../static/js/address.js"></script>
+    <script src="../static/js/laydate/laydate.js"></script>
+
 </head>
 
 <body>
@@ -43,11 +46,12 @@
                 <table id="pub">
                     <tr>
                         <td>NickName:</td>
-                        <td> <input style="width: 240px;" type="text" id="nickname" placeholder="请输入昵称"></td>
+                        <td> <input style="width: 240px;" type="text" id="nickname" placeholder="{{nickname}}"
+                                value="{{nickname}}"></td>
                     </tr>
                     <tr>
                         <td>Age:</td>
-                        <td> <input style="width: 240px;" type="text" id="age" placeholder="请输入年龄"></td>
+                        <td> <input style="width: 240px;" type="text" id="age" value="{{age}}"></td>
                     </tr>
                     <tr>
                         <td><span style="color: gray">Account:</span></td>
@@ -57,7 +61,8 @@
                     </tr>
                     <tr>
                         <td>Gender：</td>
-                        <td><label>Boy
+                        <td><input type="hidden" id="sexht" value="{{sex}}" />
+                            <label>Boy
                                 <input type="radio" name="gender" value="boy" id="gender">
                             </label>
                             <label>Girl
@@ -68,28 +73,107 @@
                     </tr>
                     <tr>
                         <td>Birthday:</td>
-                        <td><input style="width: 240px;" type="text" name="birthday" placeholder="请输入生日" id="birthday">
+                        <td><input style="width: 240px;" type="text" name="birthday" value="{{birthday}}" id="birthday">
                         </td>
                     </tr>
                     <tr>
                         <td>Address:</td>
-                        <td><input style="width: 240px;" type="text" name="address" placeholder="请输入地址" id="address">
+                        <td><input type="hidden" id="selectRefundReason" value="{{prov}}" />
+                            <select id="provinces" onchange="chinaChange(this,document.getElementById('city'));" style=" width:48%;
+    height:30px;line-height:30px; ">
+                                <option value="请选择省份">请选择省份</option>
+                                <option value="北京市">
+
+                                    北京市 </option>
+                                <option value="天津市">
+                                    天津市 </option>
+                                <option value="上海市">
+                                    上海市 </option>
+                                <option value="重庆市">
+                                    重庆市 </option>
+                                <option value="河北省">
+                                    河北省 </option>
+                                <option value="山西省">
+                                    山西省 </option>
+                                <option value="辽宁省">
+                                    辽宁省 </option>
+                                <option value="吉林省">
+                                    吉林省 </option>
+                                <option value="黑龙江省">
+                                    黑龙江省</option>
+                                <option value="江苏省">
+                                    江苏省 </option>
+                                <option value="浙江省">
+                                    浙江省 </option>
+                                <option value="安徽省">
+                                    安徽省 </option>
+                                <option value="福建省">
+                                    福建省 </option>
+                                <option value="江西省">
+                                    江西省 </option>
+                                <option value="山东省">
+                                    山东省 </option>
+                                <option value="河南省">
+                                    河南省 </option>
+                                <option value="湖北省">
+                                    湖北省 </option>
+                                <option value="湖南省">
+                                    湖南省 </option>
+                                <option value="广东省">
+                                    广东省 </option>
+                                <option value="海南省">
+                                    海南省 </option>
+                                <option value="四川省">
+                                    四川省 </option>
+                                <option value="贵州省">
+                                    贵州省 </option>
+                                <option value="云南省">
+                                    云南省 </option>
+                                <option value="陕西省">
+                                    陕西省 </option>
+                                <option value="甘肃省">
+                                    甘肃省 </option>
+                                <option value="青海省">
+                                    青海省 </option>
+                                <option value="台湾省">
+                                    台湾省 </option>
+                                <option value="广西壮族自治区">
+                                    广西壮族自治区</option>
+                                <option value="内蒙古自治区">
+                                    内蒙古自治区</option>
+                                <option value="西藏自治区">
+                                    西藏自治区</option>
+                                <option value="宁夏回族自治区">
+                                    宁夏回族自治区 </option>
+                                <option value="新疆维吾尔自治区">
+                                    新疆维吾尔自治区</option>
+                                <option value="香港特别行政区">
+                                    香港特别行政区</option>
+                                <option value="澳门特别行政区">
+                                    澳门特别行政区</option>
+                            </select>
+                            <input type="hidden" id="selectcity" value="{{city}}" />
+                            <select name="city" id="city" style=" width:48%; height:30px;line-height:30px; ">
+                                <option value="{{city}}">{{city}}</option>
+                            </select></td>
+                        <!-- <td><input style="width: 240px;" type="text" name="address" placeholder="请输入地址" id="address"> -->
                         </td>
                     </tr>
                     <tr>
                         <td>E-mail:</td>
-                        <td><input style="width: 240px;" type="text" id="mail" placeholder="{{user.mail}}"></td>
+                        <td><input style="width: 240px;" type="text" id="mail" value="{{email}}"></td>
                     </tr>
                     <tr>
                         <td>PhoneNumber:</td>
-                        <td><input style="width: 240px;" type="text" id="phone_num" placeholder="{{user.mobil_phone}}">
+                        <td><input style="width: 240px;" type="text" id="phone_num" value="{{mobile_number}}">
                         </td>
                     </tr>
                     <tr>
                         <td id="per_sign_title">PersonalSignature：</td>
 
                         <td>
-                            <textarea style="width: 240px;" name="" id="per_sign" cols="21" rows="5"></textarea>
+                            <textarea style="width: 240px;" name="" id="per_sign" cols="21"
+                                rows="5">{{introduction}}</textarea>
                         </td>
                     </tr>
                 </table>
@@ -97,8 +181,9 @@
                     <h4 style="font-weight: 500;">Profile picture</h4>
                     <!-- TODO 获取图片 -->
                     <br>
-
-                    <img src="{% static 'images/timg.jpeg' %}" alt="">
+                    <div id="img_path">
+                        <img src="http://127.0.0.1:8000/media/{{profile_head}}" alt="">
+                    </div>
                     <br>
                     <input type="file" id="icon" maxlength="30">
                     <button id="avatar_btn">Upload</button>
