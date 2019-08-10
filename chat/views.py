@@ -241,6 +241,7 @@ def send_friend_list(request, user_id):
   if len(friends_query):
     for user in friends_query:
       friends = {}
+      friends["username"]= user.username
       friends["nickname"] = user.userinfo.nickname
       friends["sex"] = user.userinfo.sex
       friends["age"] = user.userinfo.age
@@ -252,15 +253,41 @@ def send_friend_list(request, user_id):
   request.websocket.send(friend_list)
 
 
-# 发送好友申请
-def send_friend_apply(request, user_id, client_list):
-  user_query = User.objects.filter(username=user_id)[0]
-  message = Messages.objects.filter(M_ToUserID=user_query,
-                                    M_staues=False)
-  if not message:
-    post_messages = message.M_PostMessages
-    client_list[user_id].send(post_messages)
 
+# 登陆者接收离线信息
+def recive_offline_msg(request,user_id,client_list):
+  loginer=User.objects.filter(username=user_id)[0]
+  ms_unsend = Messages.objects.filter(M_status=False,
+                                      M_ToUserID=loginer)
+  for ms in ms_unsend:
+    # 获取消息类型
+    ms_type=ms.M_MessagesTypeID.MT_Name
+    # 好友请求类型
+    if ms_type=="0":
+      pass
+    # 应答好友请求类型
+    elif ms_type=="1":
+      pass
+
+# 处理未发送的消息
+def send_unsend_msg(client_list,dataType_query,messages):
+  # 找到未发送的好友请求信息
+  ms_unsend = Messages.objects.filter(M_status=False,
+                                      M_MessagesTypeID=dataType_query)
+  # 遍历发送
+  for i in ms_unsend:
+    print("==step1.1==", i.M_ToUserID.username)
+    # 判断接收者是否登录
+    if i.M_ToUserID.username in client_list.keys():
+      if not client_list[i.M_ToUserID.username].is_closed():
+        # print("==step1.2==", messages)
+        messages["step"] = "1"
+        messages = json.dumps(messages)
+        client_list[i.M_ToUserID.username].send(messages.encode())
+        # 标记已发送的消息
+        i.M_status = True
+        i.save()
+        print("===step1.3===", i.M_status)
 
 # 处理添加好友请求
 client_list = {}
@@ -271,14 +298,17 @@ def add_friend(request):
     user_id = request.session["user"]["name"]
     client_list[user_id] = request.websocket
     print(client_list)
-
     # 发送好友列表
-    # send_friend_list(request, user_id)
+    send_friend_list(request, user_id)
+
+    # 接收离线信息
+    # recive_offline_msg(request,user_id,client_list)
 
     for messages in request.websocket:
       messages = json.loads(messages.decode())
       print("===messages===",messages)
-      # 获取add_friend的步骤
+
+      # 获取messages
       step = messages.get("step")
       sender = messages.get("sender")
       sender_query = User.objects.filter(username=sender)
@@ -295,13 +325,16 @@ def add_friend(request):
       print(dataType)
       dataType_query = MessagesType.objects.filter(MT_Name=str(dataType))
       if not dataType_query:
-        request.websocket.send(b'{"code":102,"error":"The datatype is not existed"}')
+        request.websocket.send(b'{"code":102,"error":"The dataType is not existed"}')
         continue
+
       # 接收申请请求
       if step == 0:
         print("====step0====",messages)
         # 阻止好友请求重复发送
-        try:
+        if not Messages.objects.filter(M_FromUserID=sender_query[0],
+                                       M_ToUserID=reciver_query[0],
+                                       M_status=False):
           # 添加消息
           Messages.objects.create(M_status=False,
                                   M_MessagesTypeID=dataType_query[0],
@@ -309,52 +342,43 @@ def add_friend(request):
                                   M_ToUserID=reciver_query[0],
                                   M_PostMessages=json.dumps(messages)
                                   )
-        except Exception as e:
-          print(e)
+
+        else:
           request.websocket.send(b'{"code":103,"error":"Donot send friend_request double"}')
         step = 1
       # 发送申请响应
       if step == 1:
-        # 找到未发送的好友请求信息
-        ms_unsend = Messages.objects.filter(M_status=False,
-                                            M_MessagesTypeID=dataType_query[0])
-        print("===step1===", messages)
-
-        try:
-          # 遍历发送
-          for i in ms_unsend:
-            # 判断接收者是否登录
-            # if i.M_ToUserID.logout_time<i.M_ToUserID.login_time:
-            if not client_list[i.M_ToUserID.username].is_closed():
-              print("==step1.1==")
-              messages["step"] = "1"
-              messages = json.dumps(messages)
-              print(i.M_ToUserID.username)
-              client_list[i.M_ToUserID.username].send(messages.encode())
-              # 标记已发送的消息
-              i.M_staues = True
-              i.save()
-        except Exception as e:
-          print("step1 error", e)
+        send_unsend_msg(client_list,dataType_query[0],messages)
 
       # 接收应答请求
       if step == 2:
         status = messages.get("status")
-        print(status)
-        if status == "True":
-          try:
-            sender_query.friends = reciver_query
-            sender_query.save()
-          except Exception as e:
-            print(e)
-            request.websocket.send(b'{"code":105,"error":"The user been add friend alreadly"}')
+        if status == "1":
+          sender_query[0].friends.add(reciver_query[0])
+          sender_query[0].save()
+
+          print("==step2==")
+          # request.websocket.send(b'{"code":105,"error":"The user been add friend alreadly"}')
         else:
           print("%s拒绝好友请求%s" % (reciver, sender))
         step = 3
       # 发送应达响应
       if step == 3:
         print("===step3===",messages)
-        client_list[sender].send(messages)
+        # 客户端在线时发送
+        print("===step3.1===在线？", client_list[reciver_query[0].username].is_closed())
+        if not client_list[reciver_query[0].username].is_closed():
+          messages=json.dumps(messages).encode()
+          client_list[sender].send(messages)
+        # 对方不在线时存储
+        else:
+          print("===step3.1===存储",messages)
+          Messages.objects.create(M_status=False,
+                                  M_MessagesTypeID=dataType_query[0],
+                                  M_FromUserID=sender_query[0],
+                                  M_ToUserID=reciver_query[0],
+                                  M_PostMessages=json.dumps(messages)
+                                  )
       request.websocket.send(b'{"step":"5"}')
   # else:
     # messages = request.GET
@@ -402,7 +426,7 @@ def get_city(ip):
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}
   responses = requests.get(url, headers=headers)
   context = responses.content.decode("utf-8")
-  city = re.findall(r'span class="Whwtdhalf w50-0">.*?省(\w+?)市.*?</span>', context)
+  city = re.findall(r'span class="Whwtdhalf w50-0">.*?省(\w+?)市.*?</span>', context,re.S)
   print(city)
   return city[0]
 
@@ -432,7 +456,7 @@ def get_news():
   response = requests.get(url, headers=headers)
   text = response.content.decode('utf-8')
   # 初步过滤
-  info = re.findall(r'<div class="wrap">.*?</a></div>', text)
+  info = re.findall(r'<div class="wrap">.*?</a></div>', text,re.S)
   # 获得五条新闻
   n = 0
   for i in info:

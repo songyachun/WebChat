@@ -59,7 +59,7 @@ $(function(){
                 'sender': $('#S').html(),
                 'reciver': $('#R').html(),
                 'step':2,
-                'type':'0',
+                'dataType':0,
                 'status':status})
                 )
             }

@@ -57,8 +57,8 @@ class Messages(models.Model):
     M_time=models.DateTimeField("发送时间",auto_now_add=True)
     #外键：关联消息类型表
     M_MessagesTypeID=models.ForeignKey(MessagesType,related_name='消息类型ID')
-    M_FromUserID=models.OneToOneField(User,related_name="发送者ID")
-    M_ToUserID=models.OneToOneField(User,related_name="接收者ID")
+    M_FromUserID=models.ForeignKey(User,related_name="发送者ID")
+    M_ToUserID=models.ForeignKey(User,related_name="接收者ID")
 
 
 #用户群表
