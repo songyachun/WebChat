@@ -21,6 +21,53 @@ $(function(){
 //        console.log("您已连接 ，消息提示系统！！")
         console.log(msgsocket.readyState)
     };
+    //开启获取好友列表的socket
+    listsocket.onopen = function(event){
+        console.log('开启成功')
+    }
+    //接收好友列表并更新
+//    get_friend_info = function (target){
+//        var username = target.username
+//        var email = target.email
+//        var mobile_number = target.mobile_number
+//        var nickname = target.nickname
+//        var sex = target.sex
+//        var age = target.age
+//        var birthday = target.birthday
+//        var profile_head = target.friend_head
+//        var profile = target.profile
+//    }
+
+
+//    创建friend_item
+    createItem = function (friend_list){
+        var div = $('<div></div>')
+                $('#friend_list').append(div)
+                var img = $('<img>')
+                var h4 = $('<h4></h4>')
+                div.addClass('friend_item')
+                img.attr('src',friend_list[i].frofile_head)
+                h4.html(friend_list[i].username)
+                div.append(img)
+                div.append(h4)
+
+    }
+
+
+    listsocket.onmessage = function(event){
+        console.log(even.data);//{'code':200,'friends':[{'username':username,...}]}
+        var data = JSON.parse(event.data)
+        if(data.code=='200'){
+            var friend_list = data.friends
+            for(var i=0;i++;i<friend_list.length){
+                createItem(friend_list[i])
+            }
+
+        }
+    }
+
+
+
     //发送添加好友请求
     $('#add_friend').click(function(){
         var sender = $('#user_name').html()
@@ -85,9 +132,11 @@ $(function(){
             $('body').append(addTips)
             console.log('====111====')
             var addTips_html=''
-            addTips_html ="<p>"+"<span id='R'>"+reciver+"</span>"+"您好:"+"</p>"
-            addTips_html +='<p>'+'<span id="S">'+sender+'</span>'+'请求添加您为好友,是否同意?'+'</p>'
+            addTips_html ="<p>"+"<b id='R'>"+reciver+"</b>"+"您好:"+"</p>"
+            addTips_html +='<p>'+'<b id="S">'+sender+'</b>'+'请求添加您为好友,是否同意?'+'</p>'
+            addTips_html += '<br>'
             addTips_html +='<input class="res" id="Y" type="submit" value="是">'
+            addTips_html +='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
             addTips_html +='<input class="res" id="N" type="submit" value="否">'
             console.log(addTips_html)
             addTips.html(addTips_html)

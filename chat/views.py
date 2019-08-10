@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 import pymysql
 import json
 from verify import models
@@ -383,3 +383,16 @@ def get_news():
     if n > 4:
       return news_list
 
+
+#获取好友详细信息
+
+def detial_info(request):
+    print('~~~~~~~~~')
+    res =json.dumps({'username':'123','nickname':'321',
+           'profile':'haha',
+           'profile_head':'',
+           'sex':'M',
+           'birthday':'1900-9-9',
+           'address':'beijing'
+           })
+    return HttpResponse(res)
