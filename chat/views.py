@@ -123,8 +123,11 @@ def mod_user_info(request):
         birthday = userinfo.birthday
         introduction = userinfo.profile
         profile_head = userinfo.profile_head
-        city=userinfo.city_id
-        prov=userinfo.province_id
+        # city=models.City.objects.filter(C_ID=userinfo)[0]
+        # prov=models.Province.objects.filter()
+
+        city=userinfo.city_id.C_Name
+        prov=userinfo.province_id.P_name
         return render(request, 'personal_set.html', locals())
 
     if request.method == 'POST':

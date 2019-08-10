@@ -1,4 +1,21 @@
 $(function () {
+    var key = $("#selectRefundReason").val();
+    var key1=$("#selectcity").val();
+    var sexht=$("#sexht").val();
+    if(sexht==1){
+        sexht1='boy';
+    }else{
+        sexht1='girl';
+    }
+    console.log(sexht1)
+    console.log(key)
+    console.log(key1)
+    $("#provinces option[value='" + key + "']").attr("selected", "selected");
+    $("#gender[value='"+sexht1+"']").attr("checked","checked")
+    // $("#city option[value='" + key1 + "']").attr("selected", "selected");
+
+
+    
     $("#phone_num").blur(function () {
         var phone_num = $(this).val();
         console.log(phone_num)
@@ -16,7 +33,7 @@ $(function () {
 
     laydate.render({
         elem: '#birthday' //指定元素
-      });
+    });
 
     // 修改个人信息
     $("#per_btn").click(function () {

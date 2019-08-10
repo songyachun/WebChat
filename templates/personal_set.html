@@ -46,7 +46,8 @@
                 <table id="pub">
                     <tr>
                         <td>NickName:</td>
-                        <td> <input style="width: 240px;" type="text" id="nickname" placeholder="{{nickname}}" value="{{nickname}}"></td>
+                        <td> <input style="width: 240px;" type="text" id="nickname" placeholder="{{nickname}}"
+                                value="{{nickname}}"></td>
                     </tr>
                     <tr>
                         <td>Age:</td>
@@ -60,7 +61,8 @@
                     </tr>
                     <tr>
                         <td>Gender：</td>
-                        <td><label>Boy
+                        <td><input type="hidden" id="sexht" value="{{sex}}" />
+                            <label>Boy
                                 <input type="radio" name="gender" value="boy" id="gender">
                             </label>
                             <label>Girl
@@ -71,14 +73,15 @@
                     </tr>
                     <tr>
                         <td>Birthday:</td>
-                        <td><input style="width: 240px;" type="text" name="birthday" value="{{birthday}}" id="birthday" >
+                        <td><input style="width: 240px;" type="text" name="birthday" value="{{birthday}}" id="birthday">
                         </td>
                     </tr>
                     <tr>
                         <td>Address:</td>
-                        <td><select id="provinces" onchange="chinaChange(this,document.getElementById('city'));" style=" width:48%;
+                        <td><input type="hidden" id="selectRefundReason" value="{{prov}}" />
+                            <select id="provinces" onchange="chinaChange(this,document.getElementById('city'));" style=" width:48%;
     height:30px;line-height:30px; ">
-                                <option value="{{prov}}">请选择省份</option>
+                                <option value="请选择省份">请选择省份</option>
                                 <option value="北京市">
 
                                     北京市 </option>
@@ -149,8 +152,9 @@
                                 <option value="澳门特别行政区">
                                     澳门特别行政区</option>
                             </select>
+                            <input type="hidden" id="selectcity" value="{{city}}" />
                             <select name="city" id="city" style=" width:48%; height:30px;line-height:30px; ">
-                                <option value="{{city}}">请选择市区</option>
+                                <option value="{{city}}">{{city}}</option>
                             </select></td>
                         <!-- <td><input style="width: 240px;" type="text" name="address" placeholder="请输入地址" id="address"> -->
                         </td>
@@ -168,7 +172,8 @@
                         <td id="per_sign_title">PersonalSignature：</td>
 
                         <td>
-                            <textarea style="width: 240px;" name="" id="per_sign" cols="21" rows="5" >{{introduction}}</textarea>
+                            <textarea style="width: 240px;" name="" id="per_sign" cols="21"
+                                rows="5">{{introduction}}</textarea>
                         </td>
                     </tr>
                 </table>
