@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 import pymysql
 import json
 from verify import models
@@ -242,12 +242,12 @@ def send_friend_list(request, user_id):
     for user in friends_query:
       friends = {}
       friends["username"]= user.username
-      friends["nickname"] = user.userinfo.nickname
-      friends["sex"] = user.userinfo.sex
-      friends["age"] = user.userinfo.age
-      friends["birthday"] = user.userinfo.birthday
-      friends["profile_head"] = str(user.userinfo.profile_head)
-      friends["profile"] = user.userinfo.profile
+      # friends["nickname"] = user.userinfo.nickname
+      # friends["sex"] = user.userinfo.sex
+      # friends["age"] = user.userinfo.age
+      # friends["birthday"] = user.userinfo.birthday
+      # friends["profile_head"] = str(user.userinfo.profile_head)
+      # friends["profile"] = user.userinfo.profile
       friend_list['friends'].append(friends)
   friend_list = json.dumps(friend_list).encode()
   request.websocket.send(friend_list)
@@ -299,13 +299,14 @@ def add_friend(request):
     client_list[user_id] = request.websocket
     print(client_list)
     # 发送好友列表
-    send_friend_list(request, user_id)
+    # send_friend_list(request, user_id)
 
     # 接收离线信息
     # recive_offline_msg(request,user_id,client_list)
 
     for messages in request.websocket:
-      messages = json.loads(messages.decode())
+      print("===messages0===",messages)
+      messages = json.loads(messages)
       print("===messages===",messages)
 
       # 获取messages
@@ -385,24 +386,25 @@ def add_friend(request):
     # print(messages)
     # return render(request, "text.html")
 
-
 # 发送好友列表
 @accept_websocket
 def send_friend(request):
-  # if request.is_websocket():
-  #   for message in request.websocket:
-  #     request.websocket.send(message)
-  #     print(message)
+  if request.is_websocket():
+    user_id = request.session["user"]["name"]
+    # 发送好友列表
+    send_friend_list(request, user_id)
+    for message in request.websocket:
+      request.websocket.send(b'{"code":200,"friends":"20"}')
+      print(message)
   # else:
   #   message = request.GET
   #   print(message)
   #   return render(request, "test.html")
-  pass
 
 # 查询数据库,返回城市对应的编码
 def get_city_code(city):
   # 连接数据库,charset参数必填
-  conn = pymysql.connect(host='localhost',
+  conn = pymysql.connect(host='176.140.10.214',
                          port=3306,
                          user='root',
                          password='123456',
@@ -467,3 +469,17 @@ def get_news():
     n += 1
     if n > 4:
       return news_list
+
+
+#获取好友详细信息
+def detial_info(request):
+    print('~~~~~~~~~')
+    res =json.dumps({'username':'123','nickname':'321',
+           'profile':'haha',
+           'profile_head':'',
+           'sex':'M',
+           'birthday':'1900-9-9',
+           'address':'beijing'
+           })
+    return HttpResponse(res)
+

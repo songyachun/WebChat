@@ -17,4 +17,10 @@ urlpatterns=[
   # ...
   url(r'^inter_layout$', views.inter_layout),
   url(r'^feedback$', views.feedback),
+  #添加好友
+  url(r'^friend_id$',views.add_friend),
+  #获取好友详细信息
+  url(r'^detial_info$',views.detial_info)
+
 ]
+

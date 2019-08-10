@@ -222,23 +222,22 @@ ol>li:hover{
 }
 
 /*.friend_item内部样式*/
-.friend_item h3{
+/*.friend_item h3{
     height:24px;
-
     border-bottom:1px solid grey;
-}
-.contact_item{
+}*/
+.friend_item{
     position:relative;
     height:50px;
     border-bottom:1px solid grey;
 }
-.contact_item img{
+.friend_item img{
    width:30px;height:30px;
     position:absolute;
     top:10px;left:20px;
 }
 
-.contact_item h4{
+.friend_item h4{
     position:absolute;
     width:204px;height:30px;
     background:skyblue;
@@ -315,7 +314,32 @@ ol>li:hover{
     display:-webkit-flex;
 }
 
+
+#detial>img{
+    width:100px;height:100px;
+    margin-top:100px;
+    margin-left:310px;
+}
+#detial>h2{
+    margin:15px auto;
+    text-align:center;
+}
+
+#detial>h3{
+    margin:8px auto;
+    text-align:center;
+}
+
+
+/*好友添加提示*/
 #addTips{
     position:fixed;
     bottom:50px;right:0;
+    border:1px solid black;
+    width:180px;height:100px;
 }
+#addTips b{
+    font-size:16px;
+    font-color:balck;
+}
+

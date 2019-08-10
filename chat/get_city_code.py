@@ -32,7 +32,7 @@ def parse_url(url):
 # 存储到数据库函数
 def store_2_mysql():
   # 连接数据库,charset参数必填
-  conn = pymysql.connect(host='localhost',
+  conn = pymysql.connect(host='176.140.10.214',
                          port=3306,
                          user='root',
                          password='123456',

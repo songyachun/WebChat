@@ -90,6 +90,20 @@ DATABASES = {
     'HOST': '127.0.0.1',
     'PORT': 3306,
   }
+# =======
+#     # 'default': {
+#     #     'ENGINE': 'django.db.backends.sqlite3',
+#     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     # }
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'webchat_db',  # 数据库名称,需要自己定义
+#         'USER': 'root',
+#         'PASSWORD': '123456',  # 管理员密码
+#         'HOST': '176.140.10.214',
+#         'PORT': 3306,
+#     }
+# >>>>>>> e14fbb35866f6dea1fefabf03891fa89d0032a35
 }
 
 # Password validation

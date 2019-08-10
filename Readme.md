@@ -157,7 +157,12 @@
 2. 推送好友列表
    - url：ws://127.0.0.1:8000/chat/friend_list
    - 通讯方式：websocket
-   - 请求格式：json{code":200, "friends":[{"username":好友名称，"friend_head":....} ]}
+   - 请求格式：json{code":200, "friends":[{"username":好友名称，"friend_head":头像} .....]}
+3. 好友详细信息
+   - url：ws://127.0.0.1:8000/chat/detial_info
+   - 通讯方式：ajax
+   - 请求格式："username":好友名称
+   - 响应格式：json{code":200, "username":好友名称，"friend_head":头像....}
 
 #### 详细设计
 

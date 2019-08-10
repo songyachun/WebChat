@@ -11,11 +11,7 @@ $(function (){
     });
     /*点击#address显示下拉列表*/
     $('#address ul>li').click(function (e){
-//        console.log($("#address ol").show());
-//        if($("#address ol").css("display")=="none")
-//         $("#address ol").show();
-//        else
-//           $("#address ol").hide();
+          $("#address ol").hide();
         e.stopPropagation();
         $('#address ol').slideToggle();
         if($('#address ol').is(':visible')){
@@ -24,15 +20,6 @@ $(function (){
         })
         }
     });
-//    var list_1=$('#address ol').children;
-//    console.log(list_1)
-//    for(var i=0; i<list_1.length;i++){
-//        console.log(list_1[i])
-//        list[i].onclick=function(){
-//        $('#address ul>li').html($(this).html())
-//        }
-//    }
-
 
 
 
@@ -49,8 +36,6 @@ $(function (){
             },
             'JSON')
     });
-
-    /*添加好友*/
 
 
 
@@ -83,6 +68,23 @@ $(function (){
     $('.friend_item').click(function (){
         $('#right_friend').show();
         $('#right_blank,#right').hide()
+        $.ajax({
+            data:$(this).children('h4').html(),
+            type:'GET',
+            url:'/chat/detial_info',
+            dataType:'json',
+            success:function (resText){
+                console.log('~~~~')
+                $('#detial').children('img').attr('src',resText.frofile_head);
+                $('#detial').children('h2').html(resText.nickname);
+                $('#detial').children('#u_01').html(resText.profile);
+                $('#detial').children('#u_02').html(resText.username);
+                $('#detial').find('#u_03').html(resText.sex);
+                $('#detial').find('#u_04').html(resText.birthday);
+                $('#detial').children('#u_05').html(resText.address);
+            }
+        })
+
     })
 
     var getDateTime = function (){
