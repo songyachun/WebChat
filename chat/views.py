@@ -53,7 +53,8 @@ def chat(request):
 
 
 # 修改密码
-@check_login
+
+@csrf_exempt
 def mod_pwd(request):
     if request.method == 'GET':
         username = request.session["user"]["name"]
