@@ -334,11 +334,17 @@ ol>li:hover{
 #detial>h2{
     margin:15px auto;
     text-align:center;
+    color: black;
+    font-size:18px;
+    font-weight: 800;
 }
 
 #detial>h3{
     margin:8px auto;
     text-align:center;
+    font-weight: 300;
+    color:rgb(46, 45, 45);
+    text-align: center
 }
 
 
@@ -354,3 +360,17 @@ ol>li:hover{
     font-color:balck;
 }
 
+#make_chat,
+#delete_friend{
+    border-style: none;
+    display: block;
+    background: #ff0035;
+    color: white;
+    width: 150px;
+    height: 35px;
+    border-radius: 20px;
+    box-shadow: none;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 40px auto;
+}

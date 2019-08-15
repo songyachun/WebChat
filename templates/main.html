@@ -14,13 +14,18 @@
     <link rel="stylesheet" href="{% static 'css/main_base.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <script src="{% static 'js/jquery-1.11.3.js' %}"></script>
+    <script src="../static/js/common.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/websocket.js' %}"></script>
+    <script>
+        console.log()
+    </script>
 </head>
 <body>
     <div id="left">
         <div id="header">
             <img id="user_icon" src="{{profile_head}}" alt="">
+
             <span id="user_name">{{request.session.user.name}}</span>
             <span id="setting">设置</span>
         </div>
@@ -75,7 +80,8 @@
         <div data-target="#list_friend" id="friendlist" class="table_item">好友列表</div>
         <div id="list_chat">
             {# for ... #}
-            <div class="chat_item" id="levs">
+
+            <!-- <div class="chat_item">
                 <img src="{% static 'images/timg.jpeg' %}" alt="">
                 <span class="f_name">levs</span>
                 <span class="info">信息1</span>
@@ -135,7 +141,7 @@
                 <span class="f_name">好友名称</span>
                 <span class="info">信息</span>
                 <span class="time">时间</span>
-            </div>
+            </div> -->
         </div>
         <div id="list_news">
             {% for news in news_list %}
@@ -150,13 +156,13 @@
             {% endfor %}
         </div>
         <div id="list_friend">
-            <div class="friend_item">
+            <!-- <div class="friend_item"> -->
                 <!--<h3>A</h3>-->
                 <!--<div class="contact_item">-->
-                    <img src="{% static 'images/timg.jpeg' %}" alt="">
-                    <h4>好友昵称</h4>
+                    <!-- <img src="{% static 'images/timg.jpeg' %}" alt=""> -->
+                    <!-- <h4>好友昵称</h4> -->
                 <!--</div>-->
-            </div>
+            <!-- </div> -->
         </div>
     </div>
     <div id="right_blank">
@@ -187,20 +193,20 @@
     <!--</div>-->
     <div id="right_friend">
         <div id="right_friend_hd">
-            <div id="right_friend_title">详细信息</div>
+            <div id="right_friend_title" style="color: black;font-size:16px">详细信息</div>
         </div>
         <div id="detial">
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <h2>昵称</h2>
-                <h3 id="u_01">个性签名</h3>
-                <h3 id="u_02">好友用户名</h3>
-                <h3><span id="u_03">性别</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="u_04">生日</span></h3>
-                <h3 id="u_05">地区</h3>
+                <img src="" alt="">
+                <h2 ></h2>
+                <h3 id="u_01"></h3>
+                <h3 id="u_02"></h3>
+                <h3><span id="u_03"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="u_04"></span></h3>
+                <h3 id="u_05"></h3>
                 <h3>
-                    <button>发起聊天</button>
+                    <button id='make_chat'>发起聊天</button>
                 </h3>
                 <h3>
-                    <button>删除好友</button>
+                    <button id='delete_friend'>删除好友</button>
                 </h3>
         </div>
     </div>

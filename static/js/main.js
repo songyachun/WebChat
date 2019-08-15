@@ -1,5 +1,12 @@
 $(function (){
     /*点击'设置'显示dropdown_set*/
+    var avatar = $("#user_icon").attr('src');
+    avatar=avatar.substring(28,avatar.length)
+    console.log(avatar)
+    if (avatar==''){
+        $("#user_icon").attr('src','/static/images/timg.jpeg')
+        console.log($("#user_icon").attr('src'))
+    }
     $('#setting').click(function (e){
         e.stopPropagation();
         $('#dropdown_set').slideToggle();
@@ -54,39 +61,41 @@ $(function (){
             $('#list_chat,#list_news').hide();
         }
     })
-    $('.chat_item').click(function (){
+    $(document).on('click','.chat_item',function (){
         $('#right_blank,#right_news').hide()
         $('#right').show();
         var a = $(this).children('.f_name').html()
 //        console.log(a)
         $('#chat_title').html(a)
     })
+
 //    $('.news_item').click(function (){
 //        $('#right_news').show();
 //        $('#right_blank,#right,#right_friend').hide()
 //    })
-    $(document).on('click','.friend_item',function (){
-        $('#right_friend').show();
-        $('#right_blank,#right').hide()
-        console.log($(this))
-        $.ajax({
-            data:$(this).children('h4').html(),
-            type:'GET',
-            url:'/chat/detial_info',
-            dataType:'json',
-            success:function (resText){
-                console.log('~~~~')
-                $('#detial').children('img').attr('src',resText.frofile_head);
-                $('#detial').children('h2').html(resText.nickname);
-                $('#detial').children('#u_01').html(resText.profile);
-                $('#detial').children('#u_02').html(resText.username);
-                $('#detial').find('#u_03').html(resText.sex);
-                $('#detial').find('#u_04').html(resText.birthday);
-                $('#detial').children('#u_05').html(resText.address);
-            }
-        })
+//    $(document).on('click','.friend_item',function (){
+//        $('#right_friend').show();
+//        $('#right_blank,#right').hide()
+//        console.log($(this))
+//        $.ajax({
+//            data:$(this).children('h4').html(),
+//            type:'GET',
+//            url:'/chat/detial_info',
+//            dataType:'json',
+//            success:function (resText){
+//                console.log('~~~~')
+//                $('#detial').children('img').attr('src',resText.frofile_head);
+//                $('#detial').children('h2').html(resText.nickname);
+//                $('#detial').children('#u_01').html(resText.profile);
+//                $('#detial').children('#u_02').html(resText.username);
+//                $('#detial').find('#u_03').html(resText.sex);
+//                $('#detial').find('#u_04').html(resText.birthday);
+//                $('#detial').children('#u_05').html(resText.address);
+//            }
+//        })
+//
+//    })
 
-    })
 
 
 

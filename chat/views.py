@@ -27,6 +27,7 @@ def check_login(fn):
 
   return warp
 
+
 # 聊天界面首页
 @check_login
 def chat(request):
@@ -43,6 +44,8 @@ def chat(request):
       email_link = "#"
     else:
       email_link = email_address_dict.get(email_sign[0])
+      print(email_sign)
+      # email_link = email_address_dict[email_sign[0]]
 
     # 爬虫相关设置
     ip = request.META['REMOTE_ADDR']
@@ -51,20 +54,23 @@ def chat(request):
     news_list = get_news()
 
     # 获取头像
-    profile_head=get_profile_head(username)
+    profile_head = get_profile_head(username)
     return render(request, "main.html", locals())
+
 
 # 获取头像
 def get_profile_head(user_id):
-  user=User.objects.filter(username=user_id)
+  user = User.objects.filter(username=user_id)
   # 不存在图片 返回默认头像
   if not user:
     return '/media/avatar/timg.jpeg'
   # 返回绝对路径
   return user[0].userinfo.profile_head.url
 
+
 # 修改密码
-@check_login
+
+@csrf_exempt
 def mod_pwd(request):
   if request.method == 'GET':
     username = request.session["user"]["name"]
@@ -130,19 +136,20 @@ def mod_user_info(request):
     email = user.email
     mobile_number = user.mobile_number
     # 获取userinfo表的信息
-    userinfo = models.UserInfo.objects.get(user=user)
-    nickname = userinfo.nickname
-    avatar = userinfo.profile_head
-    age = userinfo.age
-    sex = userinfo.sex
-    birthday = userinfo.birthday
-    introduction = userinfo.profile
-    profile_head = userinfo.profile_head
-    # city=models.City.objects.filter(C_ID=userinfo)[0]
-    # prov=models.Province.objects.filter()
+    try:
+      userinfo = models.UserInfo.objects.get(user=user)
+      nickname = userinfo.nickname
+      avatar = userinfo.profile_head
+      age = userinfo.age
+      sex = userinfo.sex
+      birthday = userinfo.birthday
+      introduction = userinfo.profile
+      profile_head = userinfo.profile_head
+      city = userinfo.city_id.C_Name
+      prov = userinfo.province_id.P_name
+    except:
+      pass
 
-    city = userinfo.city_id.C_Name
-    prov = userinfo.province_id.P_name
     return render(request, 'personal_set.html', locals())
 
   if request.method == 'POST':
@@ -259,15 +266,24 @@ def upload_avatar(request):
   if request.method == "POST":
     try:
       username = request.session["user"]["name"]
-      user = models.User.objects.filter(username=username)
+      user = models.User.objects.filter(username=username)[0]
     except:
       return HttpResponse('用户未登')
 
     # 获取头像:文件存入media
     avatar = request.FILES.get('avatar', '')
-    userinfo = models.UserInfo.objects.get(user=user)
-    userinfo.profile_head = avatar
-    userinfo.save()
+    print('*************************avatar:', avatar)
+    try:
+      userinfo = models.UserInfo.objects.get(user=user)
+      userinfo.profile_head = avatar
+      userinfo.save()
+    except:
+      user = models.User.objects.get(username=username)
+      models.UserInfo.objects.create(
+        user=user,  # 增加一对一属性
+        profile_head=avatar
+      )
+
     return HttpResponse("1")
 
 
@@ -275,7 +291,8 @@ def upload_avatar(request):
 def city_weather(request):
   city = request.GET.get('city', '')
   print(city)
-  url = "http://www.weather.com.cn/weather1d/{}.shtml".format(get_city_code(city))
+  url = "http://www.weather.com.cn/weather1d/{}.shtml".format(
+    get_city_code(city))
   response = requests.get(url)
   response.encoding = 'utf-8'
   aim = re.findall('<input type="hidden" id="hidden_title" value=".*?\w{2}  (.*?)  (.*?)"',
@@ -299,7 +316,7 @@ def send_friend_list(request, user_id, client=0):
   """
   :param client: 0表示request发送者 反之为其他发送者
   """
-  friend_list = {'code': 200, "step":"5","friends": []}
+  friend_list = {'code': 200, "step": "5", "friends": []}
   user_query = User.objects.filter(username=user_id)[0]
   friends_send = user_query.friends.all()
   friends_recive = User.objects.filter(friends=user_query)
@@ -334,8 +351,8 @@ def recive_offline_msg(request, user_id, client_list):
   for ms in ms_unsend:
     # 获取消息类型
     ms_type = ms.M_MessagesTypeID.MT_Name
-    content=ms.M_PostMessages.encode()
-    print("msg===",content)
+    content = ms.M_PostMessages.encode()
+    print("msg===", content)
     # 好友请求类型
     if ms_type == "0":
       request.websocket.send(content)
@@ -343,11 +360,12 @@ def recive_offline_msg(request, user_id, client_list):
     elif ms_type == "1":
       request.websocket.send(content)
     # 聊天消息
-    elif ms_type=="2":
+    elif ms_type == "2":
       request.websocket.send(content)
     # 改成已读
-    ms.M_status=True
+    ms.M_status = True
     ms.save()
+
 
 # 处理未发送的消息
 def send_unsend_msg(client_list, dataType_query, messages):
@@ -384,7 +402,7 @@ def add_friend(request):
     print(client_list)
 
     # 接收离线信息
-    recive_offline_msg(request,user_id,client_list)
+    recive_offline_msg(request, user_id, client_list)
 
     for messages in request.websocket:
       print("===messages0===", messages)
@@ -394,7 +412,7 @@ def add_friend(request):
       print("===messages===", messages)
 
       # 获取messages
-      step = str(messages.get("step",'chat'))
+      step = str(messages.get("step", 'chat'))
       sender = messages.get("sender")
       sender_query = User.objects.filter(username=sender)
       # 判断发送者和接收者是否存在
@@ -415,7 +433,7 @@ def add_friend(request):
         continue
 
       # 聊天消息判断
-      if dataType=='2':
+      if dataType == '2':
         # 判断是否是好友
         if reciver_query[0] in sender_query[0].friends.all():
           # 存储聊天消息
@@ -429,8 +447,8 @@ def add_friend(request):
           if not client_list[reciver_query[0].username].is_closed():
             print("==type2== 在线")
             # 消息改为已发送
-            msg=Messages.objects.filter(M_PostMessages=json.dumps(messages))[0]
-            msg.M_status=True
+            msg = Messages.objects.filter(M_PostMessages=json.dumps(messages))[0]
+            msg.M_status = True
             msg.save()
             # 发送消息
             messages = json.dumps(messages).encode()
@@ -467,7 +485,6 @@ def add_friend(request):
       # 发送申请响应
       if step == '1':
         send_unsend_msg(client_list, dataType_query[0], messages)
-
 
       # 接收应答请求
       if step == '2':
@@ -525,6 +542,8 @@ def send_friend(request):
 
 
 # 查询数据库,返回城市对应的编码
+
+
 def get_city_code(city):
   # 连接数据库,charset参数必填
   conn = pymysql.connect(host='176.140.10.214',
@@ -596,13 +615,48 @@ def get_news():
 
 
 # 获取好友详细信息
+@accept_websocket
 def detial_info(request):
   print('~~~~~~~~~')
-  res = json.dumps({'username': '123', 'nickname': '321',
-                    'profile': 'haha',
-                    'profile_head': '',
-                    'sex': 'M',
-                    'birthday': '1900-9-9',
-                    'address': 'beijing'
-                    })
+  friend = request.GET.get('friend')
+  # friend_str=json.loads(jsonstr)
+  print('@@@@@@@@@@@@@@@', friend)
+  friend_dict = {}
+  try:
+    friend_info = models.User.objects.get(username=friend)
+    print(friend_info)
+    friend_dict['username'] = friend_info.username
+    print(friend_dict['username'])
+    friend_dict['nickname'] = friend_info.userinfo.nickname
+    print(friend_dict['nickname'])
+    friend_dict['profile'] = friend_info.userinfo.profile
+    print(friend_dict['profile'])
+    friend_dict['profile_head'] = str(friend_info.userinfo.profile_head)
+    print(friend_dict['profile_head'])
+    sex = friend_info.userinfo.sex
+    if sex == 1:
+      friend_dict['sex'] = '男'
+    else:
+      friend_dict['sex'] = '女'
+    print(friend_dict['sex'])
+    friend_dict['birthday'] = friend_info.userinfo.birthday
+    print(friend_dict['birthday'])
+    province_id = friend_info.userinfo.province_id.P_name
+    city_id = friend_info.userinfo.city_id.C_Name
+    address = province_id + city_id
+    friend_dict['address'] = address
+    print('!!!!!!!!!!!!!!!!!!!!!!!', friend_dict)
+  except:
+    pass
+  # friends=user.friends.all()
+
+  res = json.dumps(friend_dict)
+
+  # res = json.dumps({'username': '123', 'nickname': '321',
+  #                   'profile': 'haha',
+  #                   'profile_head': '',
+  #                   'sex': 'M',
+  #                   'birthday': '1900-9-9',
+  #                   'address': 'beijing'
+  #                   })
   return HttpResponse(res)
