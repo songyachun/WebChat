@@ -293,26 +293,37 @@ ol>li:hover{
     right:17px;
 }
 
-.content{
+.time{
+    margin-top:5px;
+    text-align:center;
+}
+
+.to_content{
     font-size:14px;
     width:640px;min-height:40px;
     position:relative;
     margin-top:10px;
 }
-.content img{
+.to_content img{
     position:absolute;
     width:40px;height:40px;
     top:0;right:0;
 }
-.content div{
+
+.to_content div{
     position:absolute;
     right:45px;
-    max-width:640px;min-height:40px;
+    max-width:510px;min-height:22px;min-width:10px;
     background:skyblue;
-    text-align:left;
+    text-align:center;
     align-items:center;
     display:-webkit-flex;
+    word-wrap:break-word;
+    padding:9px 13px;
+    display:block;
 }
+
+
 
 
 #detial>img{

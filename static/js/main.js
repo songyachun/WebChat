@@ -65,9 +65,10 @@ $(function (){
 //        $('#right_news').show();
 //        $('#right_blank,#right,#right_friend').hide()
 //    })
-    $('.friend_item').click(function (){
+    $(document).on('click','.friend_item',function (){
         $('#right_friend').show();
         $('#right_blank,#right').hide()
+        console.log($(this))
         $.ajax({
             data:$(this).children('h4').html(),
             type:'GET',
@@ -87,63 +88,14 @@ $(function (){
 
     })
 
-    var getDateTime = function (){
-        var date = new Date();
-        var y = date.getFullYear();
-        var m = date.getMonth() + 1;
-        m = m < 10 ? ('0' + m) : m;
-        var d = date.getDate();
-        d = d < 10 ? ('0' + d) : d;
-        var h = date.getHours();
-        h=h < 10 ? ('0' + h) : h;
-        var minute = date.getMinutes();
-        minute = minute < 10 ? ('0' + minute) : minute;
-        var second=date.getSeconds();
-        second=second < 10 ? ('0' + second) : second;
-        var time= y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
-        return time
-    }
-
-
-    $('#send_info').click(function (){
-        var dateTime = getDateTime()
-        var sendMsg = $('#chat_input').val()
-        var msgObj ={
-            sender:'11111',
-            reciver:'00000',
-            time:dateTime,
-            msg:sendMsg
-        }
-        msgStr =JSON.stringify(msgObj)
-        $('#chat_input').val('')
-//        if(sendMsg != ''){
-//            $ajax{
-//                data:msgStr,
-//                type:'POST',
-//                'url':'',
-//                contentType: "application/json;charset=utf-8",
-//                dataType : "json",
-//                success : function(msg) {
-////                    var content = $('<div class="content"></div>')
-////                    $('#right_bd').append(content)
-////                    var content_div = $('<div></div>')
-////                    $(content_div).html(data)
-////                    var content_img = $('<img src="/static/images/timg.jpeg">')
-////                    $('.content').append(content_img)
-////                    $('.content').append(content_div)
-//                    console.log('成功')
-//                },
-//                error : function(msg) {
-//                    console.log('失败')
-//                }
-//            }
-//        }else{
-//            alert('内容不能为空!')
-//        }
 
 
 
-    })
+
+
+
+
+
 
 
 

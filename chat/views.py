@@ -385,7 +385,7 @@ def add_friend(request):
         continue
 
       # 接收申请请求
-      if step == 0:
+      if step == '0':
         print("====step0====",messages)
         # 阻止好友请求重复发送
         if not Messages.objects.filter(M_FromUserID=sender_query[0],
@@ -401,13 +401,13 @@ def add_friend(request):
 
         else:
           request.websocket.send(b'{"code":103,"error":"Donot send friend_request double"}')
-        step = 1
+        step = '1'
       # 发送申请响应
-      if step == 1:
+      if step == '1':
         send_unsend_msg(client_list,dataType_query[0],messages)
 
       # 接收应答请求
-      if step == 2:
+      if step == '2':
         status = messages.get("status")
         if status == "1":
           sender_query[0].friends.add(reciver_query[0])
@@ -417,24 +417,25 @@ def add_friend(request):
           # request.websocket.send(b'{"code":105,"error":"The user been add friend alreadly"}')
         else:
           print("%s拒绝好友请求%s" % (reciver, sender))
-        step = 3
+        step = '3'
       # 发送应达响应
-      if step == 3:
-        print("===step3===",messages)
-        # 客户端在线时发送
-        print("===step3.1===在线？", client_list[reciver_query[0].username].is_closed())
-        if not client_list[reciver_query[0].username].is_closed():
-          messages=json.dumps(messages).encode()
-          client_list[sender].send(messages)
-        # 对方不在线时存储
-        else:
-          print("===step3.1===存储",messages)
-          Messages.objects.create(M_status=False,
-                                  M_MessagesTypeID=dataType_query[0],
-                                  M_FromUserID=sender_query[0],
-                                  M_ToUserID=reciver_query[0],
-                                  M_PostMessages=json.dumps(messages)
-                                  )
+      if step == '3':
+          messages['step'] = '3'
+          print("===step3===",messages)
+          # 客户端在线时发送
+          print("===step3.1===在线？", client_list[reciver_query[0].username].is_closed())
+          if not client_list[reciver_query[0].username].is_closed():
+              messages=json.dumps(messages).encode()
+              client_list[sender].send(messages)
+          # 对方不在线时存储
+          else:
+              print("===step3.1===存储",messages)
+              Messages.objects.create(M_status=False,
+                                      M_MessagesTypeID=dataType_query[0],
+                                      M_FromUserID=sender_query[0],
+                                      M_ToUserID=reciver_query[0],
+                                      M_PostMessages=json.dumps(messages)
+                                      )
       request.websocket.send(b'{"step":"5"}')
   # else:
     # messages = request.GET
