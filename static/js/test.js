@@ -3,12 +3,12 @@ $(function(){
 //    var name= '{{username}}';
     // 首先判断是否支持WebSocket
     if('WebSocket' in window){
-        websocket = new WebSocket("ws://176.140.10.222:8000/chat/friend_id");
+        websocket = new WebSocket("ws://127.0.0.1:8000/chat/friend_id");
         console.log("支持websocket")
     }else if('MozWebSocket' in window){
-        websocket = new MozWebSocket("ws://176.140.10.222/chat/friend_id");
+        websocket = new MozWebSocket("ws://127.0.0.1/chat/friend_id");
     }else{
-        websocket = new SockJS("ws://176.140.10.222/chat/friend_id");
+        websocket = new SockJS("ws://127.0.0.1/chat/friend_id");
     }
     // 打开连接时
     websocket.onopen = function(event) {

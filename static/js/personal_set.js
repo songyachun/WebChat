@@ -1,21 +1,33 @@
 $(function () {
     var key = $("#selectRefundReason").val();
-    var key1=$("#selectcity").val();
-    var sexht=$("#sexht").val();
-    if(sexht==1){
-        sexht1='boy';
-    }else{
-        sexht1='girl';
+    var key1 = $("#selectcity").val();
+    var sexht = $("#sexht").val();
+    if (sexht == 1) {
+        sexht1 = 'boy';
+    } else {
+        sexht1 = 'girl';
     }
     console.log(sexht1)
     console.log(key)
     console.log(key1)
     $("#provinces option[value='" + key + "']").attr("selected", "selected");
-    $("#gender[value='"+sexht1+"']").attr("checked","checked")
+    $("#gender[value='" + sexht1 + "']").attr("checked", "checked")
     // $("#city option[value='" + key1 + "']").attr("selected", "selected");
+    $("#img_path img").load(function () {
+        var avatar = $("#img_path img").attr('src');
+        console.log(avatar)
+        avatar = avatar.substring(28, avatar.length)
+        console.log(avatar)
+        if (avatar == '') {
+            $("#img_path img").attr('src', '/static/images/timg.jpeg')
+            console.log($("#img_path img").attr('src'))
+        }
+        console.log('头像', avatar)
+    })
 
 
-    
+
+
     $("#phone_num").blur(function () {
         var phone_num = $(this).val();
         console.log(phone_num)
@@ -91,8 +103,9 @@ $(function () {
     $("#avatar_btn").click(function () {
 
         var files = $("#icon").get(0).files[0]; //获取file控件中的内容
-        console.log(files)
+        console.log('头像文件', files)
         formdata = new FormData();
+        console.log(formdata)
         formdata.append("avatar", files);
         console.log(formdata)
         $.ajax({
