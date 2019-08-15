@@ -31,17 +31,17 @@ class User(models.Model):
 
 class UserInfo(models.Model):
     uid=models.AutoField(primary_key=True)
-    nickname=models.CharField("昵称",max_length=128)
-    sex=models.IntegerField("性别")
-    age=models.IntegerField("年龄")
+    nickname=models.CharField("昵称",max_length=128,null=True)
+    sex=models.IntegerField("性别",null=True)
+    age=models.IntegerField("年龄",null=True)
     birthday=models.CharField("生日",max_length=100,null=True)
     profile_head = models.ImageField("头像", blank=True, null=True, upload_to="avatar/")
     profile=models.CharField("个性签名",max_length=255,null=True)
     user=models.OneToOneField(User)
     # 外键：关联省份表
-    province_id = models.ForeignKey(Province, related_name="省份ID", default="")
+    province_id = models.ForeignKey(Province, related_name="省份ID",null=True,default="")
     # 外键；关联城市表
-    city_id = models.ForeignKey(City, related_name="省份ID", default="")
+    city_id = models.ForeignKey(City, related_name="省份ID",null=True, default="")
 
 
 #消息类型

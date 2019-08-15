@@ -427,6 +427,7 @@ def add_friend(request):
                                   )
           # 对方在线
           if not client_list[reciver_query[0].username].is_closed():
+            print("==type2== 在线")
             # 消息改为已发送
             msg=Messages.objects.filter(M_PostMessages=json.dumps(messages))[0]
             msg.M_status=True
@@ -447,6 +448,7 @@ def add_friend(request):
       # 接收申请请求
       if step == '0':
         print("====step0====", messages)
+
         # 阻止好友请求重复发送
         if not Messages.objects.filter(M_FromUserID=sender_query[0],
                                        M_ToUserID=reciver_query[0],
@@ -465,6 +467,7 @@ def add_friend(request):
       # 发送申请响应
       if step == '1':
         send_unsend_msg(client_list, dataType_query[0], messages)
+
 
       # 接收应答请求
       if step == '2':
@@ -507,7 +510,6 @@ def add_friend(request):
                                   M_PostMessages=json.dumps(messages)
                                   )
       request.websocket.send(b'{"step":"end"}')
-
 
 
 # 发送好友列表
