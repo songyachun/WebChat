@@ -154,6 +154,17 @@ $(function(){
                 alert(reciver+'拒绝您的添加!')
             }
         }
+        // 刷新好友列表
+        if(data.code=='200'&& data.step == '5'){
+            console.log('2~~~~~')
+            var friend_list = data.friends
+            console.log(friend_list.length,'$$$')
+            for(var i=0;i<friend_list.length;i++){
+                console.log('3~~~~~~')
+                createItem(friend_list[i])
+            }
+
+        }
     };
 
 

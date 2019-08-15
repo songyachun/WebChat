@@ -139,7 +139,7 @@
 - 友情链接
 - 上传下载文件
 
-  ### 好友列表
+### 好友列表
 
 #### 接口API和数据约束：
 
@@ -147,23 +147,37 @@
    - 申请好友
      - url：ws://127.0.0.1:8000/chat/friend_id
      - 通讯方式：websocket
-     - 请求格式：json{"code":200, “sender”:请求者，"reciver":"接收者"，”step“：0，"dataType":0}
-     - 响应格式：json{code":200, “sender”:请求者，"reciver":"接收者"，”step“：1，"dataType":0}
+     - 请求格式：json{ “sender”:请求者，"reciver":"接收者"，”step“：“0”，"dataType":’0‘}
+     - 响应格式：json{code":200, “sender”:请求者，"reciver":"接收者"，”step“：”1”，"dataType":”0”}
    - 回复请求
      - url：ws://127.0.0.1:8000/chat/friend_id
      - 通讯方式：websocket
-     - 请求格式：json{code":200, “sender”:请求者，"reciver":"接收者"，”step“：2，"status":"回复状态"，"dataType":1}
-     - 响应格式：json{code":200, “sender”:请求者，"reciver":"接收者"，”step“：3，"status":"回复状态"，"dataType":1}
+     - 请求格式：json{“sender”:请求者，"reciver":"接收者"，”step“：”2”，"status":"回复状态"，"dataType":”1”}
+     - 响应格式：json{code":200, “sender”:请求者，"reciver":"接收者"，”step“：”3”，"status":"回复状态"，"dataType":”1”}
 2. 推送好友列表
    - url：ws://127.0.0.1:8000/chat/friend_list
    - 通讯方式：websocket
-   - 请求格式：json{code":200, "friends":[{"username":好友名称，"friend_head":头像} .....]}
+   - 请求格式：json{code":200, "friends":[{"username":好友名称，"step":"5", "friend_head":头像} .....]}
 3. 好友详细信息
    - url：ws://127.0.0.1:8000/chat/detial_info
    - 通讯方式：ajax
    - 请求格式："username":好友名称
    - 响应格式：json{code":200, "username":好友名称，"friend_head":头像....}
 4. 判断好友是否已经存在
+5. 好友添加成功后刷新好友列表
+   - url：ws://127.0.0.1:8000/chat/friend_id
+   - 通讯方式：websocket
+   - 请求格式：json{code":200, "friends":[{"username":好友名称，"step":"5", "friend_head":头像} .....]}
+6. 获取头像
+   - 用户头像
+   - 好友头像
+
+### 一对一聊天
+
+- url：ws://127.0.0.1:8000/chat/friend_id
+- 通讯方式：websocket
+- 请求格式：json{ “sender”:请求者，"reciver":"接收者"，"dataType":“2”,"msg":"  ...","time":"2019-8-12 18:20:23"}
+- 响应格式：json{code":200, “sender”:请求者，"reciver":"接收者"，"dataType":“2”,"msg":"  ...","time":"2019-8-12 18:20:23"}
 
 #### 详细设计
 
