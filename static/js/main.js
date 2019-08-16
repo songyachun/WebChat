@@ -1,12 +1,12 @@
 $(function (){
     /*点击'设置'显示dropdown_set*/
-    var avatar = $("#user_icon").attr('src');
-    avatar=avatar.substring(28,avatar.length)
-    console.log(avatar)
-    if (avatar==''){
-        $("#user_icon").attr('src','/static/images/timg.jpeg')
-        console.log($("#user_icon").attr('src'))
-    }
+    // var avatar = $("#user_icon").attr('src');
+    // avatar=avatar.substring(28,avatar.length)
+    // console.log(avatar)
+    // if (avatar==''){
+    //     $("#user_icon").attr('src','/static/images/timg.jpeg')
+    //     console.log($("#user_icon").attr('src'))
+    // }
     $('#setting').click(function (e){
         e.stopPropagation();
         $('#dropdown_set').slideToggle();

@@ -79,69 +79,14 @@
         <div data-target="#list_news" id="news" class="table_item">资讯</div>
         <div data-target="#list_friend" id="friendlist" class="table_item">好友列表</div>
         <div id="list_chat">
-            {# for ... #}
 
             <!-- <div class="chat_item">
                 <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <span class="f_name">levs</span>
-                <span class="info">信息1</span>
-                <span class="time">时间1</span>
-            </div>
-            {# endfor #}
-            <div class="chat_item">
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <span class="f_name">好友名称2</span>
-                <span class="info">信息2</span>
-                <span class="time">时间2</span>
-            </div>
-            <div class="chat_item">
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
                 <span class="f_name">好友名称</span>
                 <span class="info">信息</span>
                 <span class="time">时间</span>
             </div>
-            <div class="chat_item">
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <span class="f_name">好友名称</span>
-                <span class="info">信息</span>
-                <span class="time">时间</span>
-            </div>
-            <div class="chat_item">
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <span class="f_name">好友名称</span>
-                <span class="info">信息</span>
-                <span class="time">时间</span>
-            </div>
-            <div class="chat_item">
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <span class="f_name">好友名称</span>
-                <span class="info">信息</span>
-                <span class="time">时间</span>
-            </div>
-            <div class="chat_item">
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <span class="f_name">好友名称</span>
-                <span class="info">信息</span>
-                <span class="time">时间</span>
-            </div>
-            <div class="chat_item">
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <span class="f_name">好友名称</span>
-                <span class="info">信息</span>
-                <span class="time">时间</span>
-            </div>
-            <div class="chat_item">
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <span class="f_name">好友名称</span>
-                <span class="info">信息</span>
-                <span class="time">时间</span>
-            </div>
-            <div class="chat_item">
-                <img src="{% static 'images/timg.jpeg' %}" alt="">
-                <span class="f_name">好友名称</span>
-                <span class="info">信息</span>
-                <span class="time">时间</span>
-            </div> -->
+            -->
         </div>
         <div id="list_news">
             {% for news in news_list %}
@@ -196,7 +141,7 @@
             <div id="right_friend_title" style="color: black;font-size:16px">详细信息</div>
         </div>
         <div id="detial">
-                <img src="" alt="">
+                <img id="u_img" src="" alt="">
                 <h2 ></h2>
                 <h3 id="u_01"></h3>
                 <h3 id="u_02"></h3>
@@ -205,9 +150,9 @@
                 <h3>
                     <button id='make_chat'>发起聊天</button>
                 </h3>
-                <h3>
+                <!-- <h3>
                     <button id='delete_friend'>删除好友</button>
-                </h3>
+                </h3> -->
         </div>
     </div>
     <img src="{{ MEDIA_URL }}">
