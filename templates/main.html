@@ -1,13 +1,13 @@
-
 <!doctype html>
 <html lang="en">
+
 <head>
     {% load staticfiles %}
     {% load static %}
 
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WebChat</title>
     <!--{% load staticfiles %}-->
@@ -21,6 +21,7 @@
         console.log()
     </script>
 </head>
+
 <body>
     <div id="left">
         <div id="header">
@@ -40,7 +41,7 @@
                 <a target="_blank" href="/chat/feedback">意见反馈</a>
             </p>
             <p class="set_item">
-                <a href="/verify/signin">退出登陆</a>
+                <a id='exit' href="/verify/signin">退出登陆</a>
             </p>
         </div>
         <div id="weather">
@@ -65,7 +66,8 @@
                     </li>
                 </ul>
             </div>
-            <span id="s01">{{weather.0}}</span><!--待添加天气图片-->
+            <span id="s01">{{weather.0}}</span>
+            <!--待添加天气图片-->
             <span id="s02">{{weather.1}}</span>
         </div>
         <div id="search_box">
@@ -90,23 +92,25 @@
         </div>
         <div id="list_news">
             {% for news in news_list %}
-            <div  class="news_item">
-                <a target="_blank" href="{{news.1}}"><div>{{news.2}}</div></a>
+            <div class="news_item">
+                <a target="_blank" href="{{news.1}}">
+                    <div>{{news.2}}</div>
+                </a>
                 <img src="{{news.0}}" alt="">
             </div>
             <!--<div style="background:green;" class="news_item">-->
-                <!--<a href="#"><div>新闻title</div></a>-->
-                <!--<img src="{% static 'images/timg.jpeg' %}" alt="">-->
+            <!--<a href="#"><div>新闻title</div></a>-->
+            <!--<img src="{% static 'images/timg.jpeg' %}" alt="">-->
             <!--</div>-->
             {% endfor %}
         </div>
         <div id="list_friend">
             <!-- <div class="friend_item"> -->
-                <!--<h3>A</h3>-->
-                <!--<div class="contact_item">-->
-                    <!-- <img src="{% static 'images/timg.jpeg' %}" alt=""> -->
-                    <!-- <h4>好友昵称</h4> -->
-                <!--</div>-->
+            <!--<h3>A</h3>-->
+            <!--<div class="contact_item">-->
+            <!-- <img src="{% static 'images/timg.jpeg' %}" alt=""> -->
+            <!-- <h4>好友昵称</h4> -->
+            <!--</div>-->
             <!-- </div> -->
         </div>
     </div>
@@ -120,10 +124,13 @@
         <div id="right_bd"></div>
         <div id="right_ft">
             <div id="chat_tool">
-                <img src="" alt=""><!--待添加'表情'图片-->
-                <img src="" alt=""><!--待添加'文件'图片-->
+                <img src="" alt="">
+                <!--待添加'表情'图片-->
+                <img src="" alt="">
+                <!--待添加'文件'图片-->
                 <!--<input type="file">-->
-                <img src="" alt=""><!--待添加'待定'图片-->
+                <img src="" alt="">
+                <!--待添加'待定'图片-->
             </div>
             <textarea id="chat_input"></textarea>
             <div id="chat_btn">
@@ -134,27 +141,28 @@
 
     </div>
     <!--<div id="right_news">-->
-        <!--<h1>新闻</h1>-->
+    <!--<h1>新闻</h1>-->
     <!--</div>-->
     <div id="right_friend">
         <div id="right_friend_hd">
             <div id="right_friend_title" style="color: black;font-size:16px">详细信息</div>
         </div>
         <div id="detial">
-                <img id="u_img" src="" alt="">
-                <h2 ></h2>
-                <h3 id="u_01"></h3>
-                <h3 id="u_02"></h3>
-                <h3><span id="u_03"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="u_04"></span></h3>
-                <h3 id="u_05"></h3>
-                <h3>
-                    <button id='make_chat'>发起聊天</button>
-                </h3>
-                <!-- <h3>
+            <img id="u_img" src="" alt="">
+            <h2></h2>
+            <h3 id="u_01"></h3>
+            <h3 id="u_02"></h3>
+            <h3><span id="u_03"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="u_04"></span></h3>
+            <h3 id="u_05"></h3>
+            <h3>
+                <button id='make_chat'>发起聊天</button>
+            </h3>
+            <!-- <h3>
                     <button id='delete_friend'>删除好友</button>
                 </h3> -->
         </div>
     </div>
     <img src="{{ MEDIA_URL }}">
 </body>
+
 </html>
